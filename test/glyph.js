@@ -1,5 +1,5 @@
 import assert  from 'assert';
-import { loadSync, Glyph, Path } from '../src/opentype';
+import { loadSync, Glyph, Path } from '../src/opentype.js';
 
 describe('glyph.js', function() {
     describe('lazy loading', function() {
