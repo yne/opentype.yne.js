@@ -6,8 +6,7 @@ opentype.js is a JavaScript parser and writer for TrueType and OpenType fonts.
 It gives you access to the <strong>letterforms</strong> of text from the browser or Node.js.
 See [https://opentype.js.org/](https://opentype.js.org/) for a live demo.
 
-Features
-========
+## Features
 
 * Create a bézier path out of a piece of text.
 * Support for composite glyphs (accented letters).
@@ -19,13 +18,23 @@ Features
 * A low memory mode is available as an option (see #329)
 * Runs in the browser and Node.js.
 
-Installation
-============
+## Installation
 
-### Using [npm](http://npmjs.org/) package manager
+### via CDN
 
-    npm install opentype.js
-    
+To use via a CDN, include on of the following code in your html:
+
+```html
+<script src="https://unpkg.com/opentype.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/opentype.js@latest/dist/opentype.min.js"></script>
+```
+
+### via [npm](http://npmjs.org/) package manager
+
+```sh
+npm install opentype.js
+```
+ 
 ```js
 const opentype = require('opentype.js');
 
@@ -38,32 +47,22 @@ Using TypeScript? [See this example](examples/typescript)
 
 Note: OpenType.js uses ES6-style imports, so if you want to edit it and debug it in Node.js run `npm run build` first and use `npm run watch` to automatically rebuild when files change.
 
-### Directly
+## Contribute
 
-[Download the latest ZIP](https://github.com/opentypejs/opentype.js/archive/master.zip) and grab the files in the `dist`
-folder. These are compiled.
+If you plan on improving/debugging opentype.js, simply do the following:
 
-### Using via a CDN
+- Fork the [opentype.js](https://github.com/opentypejs/opentype.js) repo
+- clone your fork `git clone git://github.com/yourname/opentype.js.git`
+- move into the project `cd opentype.js`
+- install needed dependencies with `npm install`
+- run the dev server with `npm start`
+- (alternatively you can just do a one-shot build with `npm run build` )
+- check if all still work fine with `npm test`
+- commit and pull requesting your changes ! thanks !
 
-To use via a CDN, include the following code in your html:
+## Usage
 
-    <script src="https://cdn.jsdelivr.net/npm/opentype.js@latest/dist/opentype.min.js"></script>
-
-### Using Bower (Deprecated [see official post](https://bower.io/blog/2017/how-to-migrate-away-from-bower/))
-
-To install using [Bower](https://bower.io/), enter the following command in your project directory:
-
-    bower install opentype.js
-
-You can then include them in your scripts using:
-
-    <script src="/bower_components/opentype.js/dist/opentype.js"></script>
-
-
-API
-===
 ### Loading a font
-![OpenType.js example Hello World](https://raw.github.com/opentypejs/opentype.js/master/g/hello-world.png)
 
 Use `opentype.load(url, callback)` to load a font from a URL. Since this method goes out the network, it is asynchronous.
 The callback gets `(err, font)` where `font` is a `Font` object. Check if the `err` is null before using the font.
@@ -295,7 +294,6 @@ Convert the path to a SVG &lt;path&gt; element, as a string.
 
 We use [SemVer](https://semver.org/) for versioning.
 
-
 ## License
 
 MIT
@@ -312,4 +310,4 @@ I would like to acknowledge the work of others without which opentype.js wouldn'
 * [tiny-inflate](https://github.com/foliojs/tiny-inflate): for WOFF decompression.
 * [Microsoft Typography](https://docs.microsoft.com/en-us/typography/opentype/spec/otff): the go-to reference for all things OpenType.
 * [Adobe Compact Font Format spec](http://download.microsoft.com/download/8/0/1/801a191c-029d-4af3-9642-555f6fe514ee/cff.pdf) and the [Adobe Type 2 Charstring spec](http://download.microsoft.com/download/8/0/1/801a191c-029d-4af3-9642-555f6fe514ee/type2.pdf): explains the data structures and commands for the CFF glyph format.
-* All contributing authors mentioned in the [AUTHORS](https://github.com/opentypejs/opentype.js/blob/master/AUTHORS.md) file.
+* All [contributors](https://github.com/opentypejs/opentype.js/graphs/contributors).
