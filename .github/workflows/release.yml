@@ -3,14 +3,21 @@ name: release
 on:
   push:
     tags:
-
+      - '*'
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/setup-node@v2
       with: {node-version: 18}
-    - name: publish
-      run: npm publish --access public
+    - run: npm install
+    - run: npm run lint
+    - run: npm run build
+    - run: npm run dist
+    - run: npm run test
+    - run: mv package.json package.ori.json
+    - run: curl -HAccept:application/vnd.github.mercy-preview+json https://api.github.com/repos/${GITHUB_REPOSITORY} | jq '{name,version:"'$GITHUB_REF_NAME'",description,homepage,author:.owner.login,license:.license.key,repository:{type:"git",url:.git_url},keywords:.topics}' > package.git.json
+    - run: jq -s '.[0] * .[1]' package.git.json package.ori.json > package.json
+    - run: npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
