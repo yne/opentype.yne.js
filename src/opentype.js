@@ -10,7 +10,6 @@ import { CmapEncoding, GlyphNames, addGlyphNames } from './encoding.js';
 import parse from './parse.js';
 import BoundingBox from './bbox.js';
 import Path from './path.js';
-import { nodeBufferToArrayBuffer } from './util.js';
 import cpal from './tables/cpal.js';
 import colr from './tables/colr.js';
 import cmap from './tables/cmap.js';
@@ -35,48 +34,6 @@ import meta from './tables/meta.js';
  * The opentype library.
  * @namespace opentype
  */
-
-// File loaders /////////////////////////////////////////////////////////
-/**
- * Loads a font from a file. The callback throws an error message as the first parameter if it fails
- * and the font as an ArrayBuffer in the second parameter if it succeeds.
- * @param  {string} path - The path of the file
- * @param  {Function} callback - The function to call when the font load completes
- */
-function loadFromFile(path, callback) {
-    const fs = require('fs');
-    fs.readFile(path, function(err, buffer) {
-        if (err) {
-            return callback(err.message);
-        }
-
-        callback(null, nodeBufferToArrayBuffer(buffer));
-    });
-}
-/**
- * Loads a font from a URL. The callback throws an error message as the first parameter if it fails
- * and the font as an ArrayBuffer in the second parameter if it succeeds.
- * @param  {string} url - The URL of the font file.
- * @param  {Function} callback - The function to call when the font load completes
- */
-function loadFromUrl(url, callback) {
-    const request = new XMLHttpRequest();
-    request.open('get', url, true);
-    request.responseType = 'arraybuffer';
-    request.onload = function() {
-        if (request.response) {
-            return callback(null, request.response);
-        } else {
-            return callback('Font could not be loaded: ' + request.statusText);
-        }
-    };
-
-    request.onerror = function () {
-        callback('Font could not be loaded');
-    };
-
-    request.send();
-}
 
 // Table Directory Entries //////////////////////////////////////////////
 /**
@@ -176,6 +133,9 @@ function parseBuffer(buffer, opt) {
     // should be an empty font that we'll fill with our own data.
     const font = new Font({empty: true});
 
+    if (buffer.constructor !== ArrayBuffer) { // convert node Buffer
+        buffer = new Uint8Array(buffer).buffer;
+    }
     // OpenType fonts use big endian byte ordering.
     // We can't rely on typed array view types, because they operate with the endianness of the host computer.
     // Instead we use DataViews where we can specify endianness.
@@ -380,63 +340,6 @@ function parseBuffer(buffer, opt) {
     return font;
 }
 
-/**
- * Asynchronously load the font from a URL or a filesystem. When done, call the callback
- * with two arguments `(err, font)`. The `err` will be null on success,
- * the `font` is a Font object.
- * We use the node.js callback convention so that
- * opentype.js can integrate with frameworks like async.js.
- * @alias opentype.load
- * @param  {string} url - The URL of the font to load.
- * @param  {Function} callback - The callback.
- */
-function load(url, callback, opt) {
-    opt = (opt === undefined || opt === null) ?  {} : opt;
-    const isNode = typeof window === 'undefined';
-    const loadFn = isNode && !opt.isUrl ? loadFromFile : loadFromUrl;
-
-    return new Promise((resolve, reject) => {
-        loadFn(url, function(err, arrayBuffer) {
-            if (err) {
-                if (callback) {
-                    return callback(err);
-                } else {
-                    reject(err);
-                }
-            }
-            let font;
-            try {
-                font = parseBuffer(arrayBuffer, opt);
-            } catch (e) {
-                if (callback) {
-                    return callback(e, null);
-                } else {
-                    reject(e);
-                }
-            }
-            if (callback) {
-                return callback(null, font);
-            } else {
-                resolve(font);
-            }
-        });
-    });
-}
-
-/**
- * Synchronously load the font from a URL or file.
- * When done, returns the font object or throws an error.
- * @alias opentype.loadSync
- * @param  {string} url - The URL of the font to load.
- * @param  {Object} opt - opt.lowMemory
- * @return {opentype.Font}
- */
-function loadSync(url, opt) {
-    const fs = require('fs');
-    const buffer = fs.readFileSync(url);
-    return parseBuffer(nodeBufferToArrayBuffer(buffer), opt);
-}
-
 export {
     Font,
     Glyph,
@@ -444,6 +347,4 @@ export {
     BoundingBox,
     parse as _parse,
     parseBuffer as parse,
-    load,
-    loadSync
 };

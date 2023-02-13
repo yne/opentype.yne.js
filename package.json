@@ -2,10 +2,10 @@
   "scripts": {
     "test": "mocha --recursive",
     "lint": "eslint src",
-    "build": "esbuild --bundle src/opentype.js --outdir=dist --sourcemap --external:fs",
-    "start": "esbuild --bundle src/opentype.js --outdir=dist --sourcemap --external:fs --serve",
-    "watch": "esbuild --bundle src/opentype.js --outdir=dist --sourcemap --external:fs --watch",
-    "dist": "esbuild --bundle src/opentype.js --outdir=dist --sourcemap --external:fs --minify --out-extension:.js=.min.js"
+    "build": "esbuild --bundle src/opentype.js --outdir=dist --sourcemap --external:fs --format=esm",
+    "start": "esbuild --bundle src/opentype.js --outdir=dist --sourcemap --external:fs --format=esm --serve",
+    "watch": "esbuild --bundle src/opentype.js --outdir=dist --sourcemap --external:fs --format=esm --watch",
+    "dist" : "esbuild --bundle src/opentype.js --outdir=dist --sourcemap --external:fs --format=esm --minify --out-extension:.js=.min.js"
   },
   "type": "module",
   "main": "dist/opentype.js",
