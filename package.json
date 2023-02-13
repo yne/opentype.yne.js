@@ -1,7 +1,7 @@
 {
   "scripts": {
     "test": "mocha --recursive",
-    "lint": "eslint src",
+    "lint": "eslint src --fix",
     "build": "esbuild --bundle src/opentype.js --outdir=dist --sourcemap --external:fs --format=esm",
     "start": "esbuild --bundle src/opentype.js --outdir=dist --sourcemap --external:fs --format=esm --serve",
     "watch": "esbuild --bundle src/opentype.js --outdir=dist --sourcemap --external:fs --format=esm --watch",
