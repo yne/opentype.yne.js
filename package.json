@@ -2,7 +2,8 @@
   "scripts": {
     "test": "mocha --recursive",
     "lint": "eslint src --fix",
-    "build": "npm run b:e.p && npm run b:e.m && npm run b:g.p && npm run b:g.m",
+    "dist": " npm run b:e.m && npm run b:g.m",
+    "build": "npm run b:e.p && npm run b:g.p",
     "b:e.p": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=esm  --out-extension:.js=.module.js",
     "b:e.m": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=esm  --out-extension:.js=.module.min.js --minify --sourcemap",
     "b:g.p": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=iife --out-extension:.js=.js            --global-name=opentype",
