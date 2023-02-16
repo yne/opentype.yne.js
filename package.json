@@ -1,23 +1,55 @@
 {
+  "name": "opentype.yne.js",
+  "description": "OpenType font parser",
+  "version": "1.3.3",
+  "author": {
+    "name": "Frederik De Bleser",
+    "email": "frederik@debleser.be"
+  },
+  "keywords": [
+    "graphics",
+    "fonts",
+    "font",
+    "opentype",
+    "otf",
+    "ttf",
+    "woff",
+    "type"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/opentypejs/opentype.js.git"
+  },
+  "main": "./dist/opentype.cjs",
+  "browser": "./dist/opentype.js",
+  "module": "./dist/opentype.module.js",
+  "type": "module",
   "scripts": {
     "test": "mocha --recursive",
     "lint": "eslint src --fix",
-    "build": "npm run b:e.p && npm run b:e.m && npm run b:g.p && npm run b:g.m",
+    "dist": " npm run b:e.m && npm run b:i.m && npm run b:c.m",
+    "build": "npm run b:e.p && npm run b:i.p && npm run b:c.p",
+    "b:i.p": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=iife --out-extension:.js=.js      --global-name=opentype",
+    "b:i.m": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=iife --out-extension:.js=.min.js  --global-name=opentype --minify --sourcemap",
+    "b:c.p": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=cjs  --out-extension:.js=.cjs",
+    "b:c.m": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=cjs  --out-extension:.js=.min.cjs --minify --sourcemap",
     "b:e.p": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=esm  --out-extension:.js=.module.js",
     "b:e.m": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=esm  --out-extension:.js=.module.min.js --minify --sourcemap",
-    "b:g.p": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=iife --out-extension:.js=.js            --global-name=opentype",
-    "b:g.m": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=iife --out-extension:.js=.min.js        --global-name=opentype --minify --sourcemap",
     "start": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --serve",
     "watch": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --watch --platform=neutral"
   },
-  "type": "module",
-  "main": "dist/opentype.min.js",
-  "module": "dist/opentype.module.min.js",
   "devDependencies": {
     "esbuild": "^0.17.7",
     "eslint": "^8.34.0",
     "mocha": "^9.2.2"
   },
+  "bin": {
+    "ot": "./bin/ot"
+  },
+  "files": [
+    "dist"
+  ],
   "eslintConfig": {
     "env": {
       "browser": true,
@@ -25,7 +57,6 @@
       "node": true
     },
     "extends": "eslint:recommended",
-    "overrides": [],
     "parserOptions": {
       "ecmaVersion": 2018,
       "sourceType": "module"
