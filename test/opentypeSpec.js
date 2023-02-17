@@ -1,9 +1,11 @@
 import assert from 'assert';
-import { Font, Glyph, load, loadSync, Path } from '../src/opentype';
+import { Font, Path, Glyph, parse} from '../src/opentype.js';
+import { readFileSync } from 'fs';
+const loadSync = (url, opt) => parse(readFileSync(url), opt);
 
 describe('opentype.js', function() {
     it('can load a TrueType font', function() {
-        const font = loadSync('./fonts/Roboto-Black.ttf');
+        const font = loadSync('./test/fonts/Roboto-Black.ttf');
         assert.deepEqual(font.names.macintosh.fontFamily, {en: 'Roboto Black'});
         assert.deepEqual(font.names.windows.fontFamily, {en: 'Roboto Black'});
         assert.equal(font.unitsPerEm, 2048);
@@ -13,21 +15,9 @@ describe('opentype.js', function() {
         assert.equal(aGlyph.path.commands.length, 15);
     });
 
-    it('can load a TrueType font as a resolved promise', function(done) {
-        load('./fonts/Roboto-Black.ttf').then((font) => {
-            assert.deepEqual(font.names.macintosh.fontFamily, {en: 'Roboto Black'});
-            assert.deepEqual(font.names.windows.fontFamily, {en: 'Roboto Black'});
-            assert.equal(font.unitsPerEm, 2048);
-            assert.equal(font.glyphs.length, 1294);
-            const aGlyph = font.charToGlyph('A');
-            assert.equal(aGlyph.unicode, 65);
-            assert.equal(aGlyph.path.commands.length, 15);
-            done();
-        });
-    });
 
     it('can load a OpenType/CFF font', function() {
-        const font = loadSync('./fonts/FiraSansOT-Medium.otf');
+        const font = loadSync('./test/fonts/FiraSansOT-Medium.otf');
         assert.deepEqual(font.names.macintosh.fontFamily, {en: 'Fira Sans OT Medium'});
         assert.deepEqual(font.names.windows.fontFamily, {en: 'Fira Sans OT Medium'});
         assert.equal(font.unitsPerEm, 1000);
@@ -39,7 +29,7 @@ describe('opentype.js', function() {
     });
 
     it('can load a CID-keyed font', function() {
-        const font = loadSync('./fonts/FDArrayTest257.otf');
+        const font = loadSync('./test/fonts/FDArrayTest257.otf');
         assert.deepEqual(font.names.windows.fontFamily, {en: 'FDArray Test 257'});
         assert.deepEqual(font.tables.cff.topDict.ros, ['Adobe', 'Identity', 0]);
         assert.equal(font.tables.cff.topDict._fdArray.length, 256);
@@ -55,7 +45,7 @@ describe('opentype.js', function() {
     });
 
     it('can load a WOFF/CFF font', function() {
-        const font = loadSync('./fonts/FiraSansMedium.woff');
+        const font = loadSync('./test/fonts/FiraSansMedium.woff');
         assert.deepEqual(font.names.macintosh.fontFamily, {en: 'Fira Sans OT'});
         assert.deepEqual(font.names.windows.fontFamily, {en: 'Fira Sans OT'});
         assert.equal(font.unitsPerEm, 1000);
@@ -64,23 +54,6 @@ describe('opentype.js', function() {
         assert.equal(aGlyph.name, 'A');
         assert.equal(aGlyph.unicode, 65);
         assert.equal(aGlyph.path.commands.length, 14);
-    });
-
-    it('handles a parseBuffer error', function(done) {
-        load('./fonts/badfont.ttf', function(err) {
-            if (err) {
-                done();
-            }
-        });
-    });
-
-    it('handles a parseBuffer error as a rejected promise', function(done) {
-        load('./fonts/badfont.ttf')
-            .catch((err) => {
-                if (err) {
-                    done();
-                }
-            });
     });
 
     it('throws an error when advanceWidth is not set', function() {
@@ -105,7 +78,7 @@ describe('opentype.js on low memory mode', function() {
     const opt = { lowMemory: true };
 
     it('can load a TrueType font', function() {
-        const font = loadSync('./fonts/Roboto-Black.ttf', opt);
+        const font = loadSync('./test/fonts/Roboto-Black.ttf', opt);
         assert.deepEqual(font.names.macintosh.fontFamily, {en: 'Roboto Black'});
         assert.deepEqual(font.names.windows.fontFamily, {en: 'Roboto Black'});
         assert.equal(font.unitsPerEm, 2048);
@@ -116,7 +89,7 @@ describe('opentype.js on low memory mode', function() {
     });
 
     it('can load a OpenType/CFF font', function() {
-        const font = loadSync('./fonts/FiraSansOT-Medium.otf', opt);
+        const font = loadSync('./test/fonts/FiraSansOT-Medium.otf', opt);
         assert.deepEqual(font.names.macintosh.fontFamily, {en: 'Fira Sans OT Medium'});
         assert.deepEqual(font.names.windows.fontFamily, {en: 'Fira Sans OT Medium'});
         assert.equal(font.unitsPerEm, 1000);
@@ -128,7 +101,7 @@ describe('opentype.js on low memory mode', function() {
     });
 
     it('can load a CID-keyed font', function() {
-        const font = loadSync('./fonts/FDArrayTest257.otf', opt);
+        const font = loadSync('./test/fonts/FDArrayTest257.otf', opt);
         assert.deepEqual(font.names.windows.fontFamily, {en: 'FDArray Test 257'});
         assert.deepEqual(font.tables.cff.topDict.ros, ['Adobe', 'Identity', 0]);
         assert.equal(font.tables.cff.topDict._fdArray.length, 256);
@@ -144,7 +117,7 @@ describe('opentype.js on low memory mode', function() {
     });
 
     it('can load a WOFF/CFF font', function() {
-        const font = loadSync('./fonts/FiraSansMedium.woff', opt);
+        const font = loadSync('./test/fonts/FiraSansMedium.woff', opt);
         assert.deepEqual(font.names.macintosh.fontFamily, {en: 'Fira Sans OT'});
         assert.deepEqual(font.names.windows.fontFamily, {en: 'Fira Sans OT'});
         assert.equal(font.unitsPerEm, 1000);
@@ -155,12 +128,13 @@ describe('opentype.js on low memory mode', function() {
         assert.equal(aGlyph.path.commands.length, 14);
     });
 
-    it('handles a parseBuffer error', function(done) {
-        load('./fonts/badfont.ttf', function(err) {
-            if (err) {
-                done();
-            }
-        });
+    it('handles a parseBuffer error', function(done, fail) {
+        try{
+            const font = loadSync('./test/fonts/badfont.otf', opt);
+            fail();
+        } catch(e) {
+            done();
+        }
     }, opt);
 
     it('throws an error when advanceWidth is not set', function() {
