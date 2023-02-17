@@ -21,22 +21,19 @@
     "type": "git",
     "url": "git://github.com/opentypejs/opentype.js.git"
   },
-  "exports": {
-    "default": "./dist/opentype.cjs",
-    "import": "./dist/opentype.module.js"
-  },
-  "browser": "./dist/opentype.js",
   "main": "./dist/opentype.cjs",
+  "browser": "./dist/opentype.js",
   "module": "./dist/opentype.module.js",
+  "type": "module",
   "scripts": {
     "test": "mocha --recursive",
     "lint": "eslint src --fix",
-    "dist": " npm run b:e.m && npm run b:c.m && npm run b:r.m",
-    "build": "npm run b:e.p && npm run b:c.p && npm run b:r.p",
-    "b:c.p": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=iife --out-extension:.js=.js      --global-name=opentype",
-    "b:c.m": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=iife --out-extension:.js=.min.js  --global-name=opentype --minify --sourcemap",
-    "b:r.p": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=cjs  --out-extension:.js=.cjs",
-    "b:r.m": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=cjs  --out-extension:.js=.min.cjs --minify --sourcemap",
+    "dist": " npm run b:e.m && npm run b:i.m && npm run b:c.m",
+    "build": "npm run b:e.p && npm run b:i.p && npm run b:c.p",
+    "b:i.p": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=iife --out-extension:.js=.js      --global-name=opentype",
+    "b:i.m": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=iife --out-extension:.js=.min.js  --global-name=opentype --minify --sourcemap",
+    "b:c.p": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=cjs  --out-extension:.js=.cjs",
+    "b:c.m": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=cjs  --out-extension:.js=.min.cjs --minify --sourcemap",
     "b:e.p": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=esm  --out-extension:.js=.module.js",
     "b:e.m": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --format=esm  --out-extension:.js=.module.min.js --minify --sourcemap",
     "start": "esbuild --bundle src/opentype.js --outdir=dist --external:fs --target=es2018 --serve",
@@ -48,7 +45,7 @@
     "mocha": "^9.2.2"
   },
   "bin": {
-    "ot": "./src/ot"
+    "ot": "./bin/ot"
   },
   "files": [
     "dist"
