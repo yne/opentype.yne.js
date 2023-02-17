@@ -22,11 +22,22 @@ See [https://opentype.js.org/](https://opentype.js.org/) for a live demo.
 
 ### via CDN
 
-To use via a CDN, include on of the following code in your html:
+Select one of the following sources in the next example:
+
+- https://opentype.js.org/dist/opentype.js
+- https://cdn.jsdelivr.net/npm/opentype.js
+- https://unpkg.com/opentype.js
 
 ```html
-<script src="https://unpkg.com/opentype.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/opentype.js@latest/dist/opentype.min.js"></script>
+<!-- using global declaration -->
+<script src="https://your.favorite.cdn/opentype.js"></script>
+<script>opentype.parse(...)</script>
+
+<!-- using module declaration -->
+<script type=module>
+import { parse } from "https://unpkg.com/opentype.yne.js/dist/opentype.module.js";
+parse(...);
+</script>
 ```
 
 ### via [npm](http://npmjs.org/) package manager
@@ -44,8 +55,6 @@ import { load } from 'opentype.js'
 ```
 
 Using TypeScript? [See this example](examples/typescript)
-
-Note: OpenType.js uses ES6-style imports, so if you want to edit it and debug it in Node.js run `npm run build` first and use `npm run watch` to automatically rebuild when files change.
 
 ## Contribute
 
