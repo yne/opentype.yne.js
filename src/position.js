@@ -5,10 +5,11 @@ import Layout from './layout.js';
 
 /**
  * @exports opentype.Position
+ * @param font
  * @class
- * @extends opentype.Layout
+ * @augments opentype.Layout
  * @param {opentype.Font}
- * @constructor
+ * @class
  */
 function Position(font) {
     Layout.call(this, font, 'gpos');
@@ -27,6 +28,7 @@ Position.prototype.init = function() {
 /**
  * Find a glyph pair in a list of lookup tables of type 2 and retrieve the xAdvance kerning value.
  *
+ * @param kerningLookups
  * @param {integer} leftIndex - left glyph index
  * @param {integer} rightIndex - right glyph index
  * @returns {integer}
@@ -68,7 +70,7 @@ Position.prototype.getKerningValue = function(kerningLookups, leftIndex, rightIn
  *
  * @param {string} [script='DFLT'] - use font.position.getDefaultScriptName() for a better default value
  * @param {string} [language='dflt']
- * @return {object[]} The list of kerning lookup tables (may be empty), or undefined if there is no GPOS table (and we should use the kern table)
+ * @returns {object[]} The list of kerning lookup tables (may be empty), or undefined if there is no GPOS table (and we should use the kern table)
  */
 Position.prototype.getKerningTables = function(script, language) {
     if (this.font.tables.gpos) {

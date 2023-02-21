@@ -85,6 +85,11 @@ subtableParsers[8] = function parseLookup8() { return { error: 'GPOS Lookup 8 no
 subtableParsers[9] = function parseLookup9() { return { error: 'GPOS Lookup 9 not supported' }; };
 
 // https://docs.microsoft.com/en-us/typography/opentype/spec/gpos
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseGposTable(data, start) {
     start = start || 0;
     const p = new Parser(data, start);
@@ -114,6 +119,10 @@ function parseGposTable(data, start) {
 // NOT SUPPORTED
 const subtableMakers = new Array(10);
 
+/**
+ *
+ * @param gpos
+ */
 function makeGposTable(gpos) {
     return new table.Table('GPOS', [
         {name: 'version', type: 'ULONG', value: 0x10000},

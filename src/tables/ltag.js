@@ -8,6 +8,10 @@ import check from '../check.js';
 import parse from '../parse.js';
 import table from '../table.js';
 
+/**
+ *
+ * @param tags
+ */
 function makeLtagTable(tags) {
     const result = new table.Table('ltag', [
         {name: 'version', type: 'ULONG', value: 1},
@@ -32,6 +36,11 @@ function makeLtagTable(tags) {
     return result;
 }
 
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseLtagTable(data, start) {
     const p = new parse.Parser(data, start);
     const tableVersion = p.parseULong();

@@ -14,6 +14,7 @@ import latinLigature from './features/latn/latinLigatures.js';
 
 /**
  * Create Bidi. features
+ *
  * @param {string} baseDir text base direction. value either 'ltr' or 'rtl'
  */
 function Bidi(baseDir) {
@@ -24,6 +25,7 @@ function Bidi(baseDir) {
 
 /**
  * Sets Bidi text
+ *
  * @param {string} text a text input
  */
 Bidi.prototype.setText = function (text) {
@@ -43,6 +45,8 @@ Bidi.prototype.contextChecks = ({
 
 /**
  * Register arabic word check
+ *
+ * @param checkId
  */
 function registerContextChecker(checkId) {
     const check = this.contextChecks[`${checkId}Check`];
@@ -80,6 +84,7 @@ function reverseArabicSentences() {
 
 /**
  * Register supported features tags
+ *
  * @param {script} script script tag
  * @param {Array} tags features tags list
  */
@@ -97,9 +102,11 @@ Bidi.prototype.registerFeatures = function (script, tags) {
 
 /**
  * Apply GSUB features
+ *
  * @param {Array} tagsList a list of features tags
  * @param {string} script a script tag
  * @param {Font} font opentype font instance
+ * @param features
  */
 Bidi.prototype.applyFeatures = function (font, features) {
     if (!font) throw new Error(
@@ -115,9 +122,10 @@ Bidi.prototype.applyFeatures = function (font, features) {
 
 /**
  * Register a state modifier
+ *
  * @param {string} modifierId state modifier id
- * @param {function} condition a predicate function that returns true or false
- * @param {function} modifier a modifier function to set token state
+ * @param {Function} condition a predicate function that returns true or false
+ * @param {Function} modifier a modifier function to set token state
  */
 Bidi.prototype.registerModifier = function (modifierId, condition, modifier) {
     this.tokenizer.registerModifier(modifierId, condition, modifier);
@@ -180,6 +188,7 @@ function applyLatinLigatures() {
 
 /**
  * Check if a context is registered
+ *
  * @param {string} contextId context id
  */
 Bidi.prototype.checkContextReady = function (contextId) {
@@ -204,6 +213,7 @@ Bidi.prototype.applyFeaturesToContexts = function () {
 
 /**
  * process text input
+ *
  * @param {string} text an input text
  */
 Bidi.prototype.processText = function(text) {
@@ -217,6 +227,7 @@ Bidi.prototype.processText = function(text) {
 /**
  * Process a string of text to identify and adjust
  * bidirectional text entities.
+ *
  * @param {string} text input text
  */
 Bidi.prototype.getBidiText = function (text) {
@@ -226,6 +237,7 @@ Bidi.prototype.getBidiText = function (text) {
 
 /**
  * Get the current state index of each token
+ *
  * @param {text} text an input text
  */
 Bidi.prototype.getTextGlyphs = function (text) {

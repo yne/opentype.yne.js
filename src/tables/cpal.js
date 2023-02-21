@@ -8,6 +8,11 @@ import check from '../check.js';
 import table from '../table.js';
 
 // Parse the header `head` table
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseCpalTable(data, start) {
     const p = new Parser(data, start);
     const version = p.parseShort();
@@ -26,6 +31,14 @@ function parseCpalTable(data, start) {
     };
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.version
+ * @param root0.numPaletteEntries
+ * @param root0.colorRecords
+ * @param root0.colorRecordIndices
+ */
 function makeCpalTable({ version = 0, numPaletteEntries = 0, colorRecords = [], colorRecordIndices = [0] }) {
     check.argument(version === 0, 'Only CPALv0 are supported.');
     check.argument(colorRecords.length, 'No colorRecords given.');

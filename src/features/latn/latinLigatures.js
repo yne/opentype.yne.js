@@ -7,6 +7,7 @@ import applySubstitution from '../applySubstitution.js';
 
 /**
  * Update context params
+ *
  * @param {any} tokens a list of tokens
  * @param {number} index current item index
  */
@@ -17,6 +18,7 @@ function getContextParams(tokens, index) {
 
 /**
  * Apply Arabic required ligatures to a context range
+ *
  * @param {ContextRange} range a range of tokens
  */
 function latinLigature(range) {

@@ -1,6 +1,14 @@
 // Drawing utility functions.
 
 // Draw a line on the given context from point `x1,y1` to point `x2,y2`.
+/**
+ *
+ * @param ctx
+ * @param x1
+ * @param y1
+ * @param x2
+ * @param y2
+ */
 function line(ctx, x1, y1, x2, y2) {
     ctx.beginPath();
     ctx.moveTo(x1, y1);

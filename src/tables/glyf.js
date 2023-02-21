@@ -7,6 +7,14 @@ import parse from '../parse.js';
 import Path from '../path.js';
 
 // Parse the coordinate data for a glyph.
+/**
+ *
+ * @param p
+ * @param flag
+ * @param previousValue
+ * @param shortVectorBitMask
+ * @param sameBitMask
+ */
 function parseGlyphCoordinate(p, flag, previousValue, shortVectorBitMask, sameBitMask) {
     let v;
     if ((flag & shortVectorBitMask) > 0) {
@@ -33,6 +41,12 @@ function parseGlyphCoordinate(p, flag, previousValue, shortVectorBitMask, sameBi
 }
 
 // Parse a TrueType glyph.
+/**
+ *
+ * @param glyph
+ * @param data
+ * @param start
+ */
 function parseGlyph(glyph, data, start) {
     const p = new parse.Parser(data, start);
     glyph.numberOfContours = p.parseShort();
@@ -178,6 +192,11 @@ function parseGlyph(glyph, data, start) {
 }
 
 // Transform an array of points and return a new array.
+/**
+ *
+ * @param points
+ * @param transform
+ */
 function transformPoints(points, transform) {
     const newPoints = [];
     for (let i = 0; i < points.length; i += 1) {
@@ -194,6 +213,10 @@ function transformPoints(points, transform) {
     return newPoints;
 }
 
+/**
+ *
+ * @param points
+ */
 function getContours(points) {
     const contours = [];
     let currentContour = [];
@@ -211,6 +234,10 @@ function getContours(points) {
 }
 
 // Convert the TrueType glyph outline to a Path.
+/**
+ *
+ * @param points
+ */
 function getPath(points) {
     const p = new Path();
     if (!points) {
@@ -260,6 +287,11 @@ function getPath(points) {
     return p;
 }
 
+/**
+ *
+ * @param glyphs
+ * @param glyph
+ */
 function buildPath(glyphs, glyph) {
     if (glyph.isComposite) {
         for (let j = 0; j < glyph.components.length; j += 1) {
@@ -298,6 +330,13 @@ function buildPath(glyphs, glyph) {
     return getPath(glyph.points);
 }
 
+/**
+ *
+ * @param data
+ * @param start
+ * @param loca
+ * @param font
+ */
 function parseGlyfTableAll(data, start, loca, font) {
     const glyphs = new glyphset.GlyphSet(font);
 
@@ -315,6 +354,13 @@ function parseGlyfTableAll(data, start, loca, font) {
     return glyphs;
 }
 
+/**
+ *
+ * @param data
+ * @param start
+ * @param loca
+ * @param font
+ */
 function parseGlyfTableOnLowMemory(data, start, loca, font) {
     const glyphs = new glyphset.GlyphSet(font);
 
@@ -332,6 +378,14 @@ function parseGlyfTableOnLowMemory(data, start, loca, font) {
 }
 
 // Parse all the glyphs according to the offsets from the `loca` table.
+/**
+ *
+ * @param data
+ * @param start
+ * @param loca
+ * @param font
+ * @param opt
+ */
 function parseGlyfTable(data, start, loca, font, opt) {
     if (opt.lowMemory)
         return parseGlyfTableOnLowMemory(data, start, loca, font);

@@ -130,6 +130,10 @@ const unicodeRanges = [
     {begin: 0x1F030, end: 0x1F09F}  // Domino Tiles
 ];
 
+/**
+ *
+ * @param unicode
+ */
 function getUnicodeRange(unicode) {
     for (let i = 0; i < unicodeRanges.length; i += 1) {
         const range = unicodeRanges[i];
@@ -142,6 +146,11 @@ function getUnicodeRange(unicode) {
 }
 
 // Parse the OS/2 and Windows metrics `OS/2` table
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseOS2Table(data, start) {
     const os2 = {};
     const p = new parse.Parser(data, start);
@@ -195,6 +204,10 @@ function parseOS2Table(data, start) {
     return os2;
 }
 
+/**
+ *
+ * @param options
+ */
 function makeOS2Table(options) {
     return new table.Table('OS/2', [
         {name: 'version', type: 'USHORT', value: 0x0003},

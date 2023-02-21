@@ -6,6 +6,11 @@ import parse from '../parse.js';
 import table from '../table.js';
 
 // Parse the maximum profile `maxp` table.
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseMaxpTable(data, start) {
     const maxp = {};
     const p = new parse.Parser(data, start);
@@ -30,6 +35,10 @@ function parseMaxpTable(data, start) {
     return maxp;
 }
 
+/**
+ *
+ * @param numGlyphs
+ */
 function makeMaxpTable(numGlyphs) {
     return new table.Table('maxp', [
         {name: 'version', type: 'FIXED', value: 0x00005000},

@@ -5,6 +5,11 @@ import check from '../check.js';
 import parse from '../parse.js';
 import table from '../table.js';
 
+/**
+ *
+ * @param name
+ * @param names
+ */
 function addName(name, names) {
     const nameString = JSON.stringify(name);
     let nameID = 256;
@@ -27,6 +32,12 @@ function addName(name, names) {
     return nameID;
 }
 
+/**
+ *
+ * @param n
+ * @param axis
+ * @param names
+ */
 function makeFvarAxis(n, axis, names) {
     const nameID = addName(axis.name, names);
     return [
@@ -39,6 +50,12 @@ function makeFvarAxis(n, axis, names) {
     ];
 }
 
+/**
+ *
+ * @param data
+ * @param start
+ * @param names
+ */
 function parseFvarAxis(data, start, names) {
     const axis = {};
     const p = new parse.Parser(data, start);
@@ -51,6 +68,13 @@ function parseFvarAxis(data, start, names) {
     return axis;
 }
 
+/**
+ *
+ * @param n
+ * @param inst
+ * @param axes
+ * @param names
+ */
 function makeFvarInstance(n, inst, axes, names) {
     const nameID = addName(inst.name, names);
     const fields = [
@@ -70,6 +94,13 @@ function makeFvarInstance(n, inst, axes, names) {
     return fields;
 }
 
+/**
+ *
+ * @param data
+ * @param start
+ * @param axes
+ * @param names
+ */
 function parseFvarInstance(data, start, axes, names) {
     const inst = {};
     const p = new parse.Parser(data, start);
@@ -84,6 +115,11 @@ function parseFvarInstance(data, start, axes, names) {
     return inst;
 }
 
+/**
+ *
+ * @param fvar
+ * @param names
+ */
 function makeFvarTable(fvar, names) {
     const result = new table.Table('fvar', [
         {name: 'version', type: 'ULONG', value: 0x10000},
@@ -107,6 +143,12 @@ function makeFvarTable(fvar, names) {
     return result;
 }
 
+/**
+ *
+ * @param data
+ * @param start
+ * @param names
+ */
 function parseFvarTable(data, start, names) {
     const p = new parse.Parser(data, start);
     const tableVersion = p.parseULong();

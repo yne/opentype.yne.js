@@ -25,11 +25,19 @@ SOFTWARE.
 var TINF_OK = 0;
 var TINF_DATA_ERROR = -3;
 
+/**
+ *
+ */
 function Tree() {
     this.table = new Uint16Array(16);   /* table of code length counts */
     this.trans = new Uint16Array(288);  /* code -> symbol translation table */
 }
 
+/**
+ *
+ * @param source
+ * @param dest
+ */
 function Data(source, dest) {
     this.source = source;
     this.sourceIndex = 0;
@@ -74,6 +82,13 @@ var lengths = new Uint8Array(288 + 32);
  * ----------------------- */
 
 /* build extra bits and base tables */
+/**
+ *
+ * @param bits
+ * @param base
+ * @param delta
+ * @param first
+ */
 function tinf_build_bits_base(bits, base, delta, first) {
     var i, sum;
 
@@ -89,6 +104,11 @@ function tinf_build_bits_base(bits, base, delta, first) {
 }
 
 /* build the fixed huffman trees */
+/**
+ *
+ * @param lt
+ * @param dt
+ */
 function tinf_build_fixed_trees(lt, dt) {
     var i;
 
@@ -115,6 +135,13 @@ function tinf_build_fixed_trees(lt, dt) {
 /* given an array of code lengths, build a tree */
 var offs = new Uint16Array(16);
 
+/**
+ *
+ * @param t
+ * @param lengths
+ * @param off
+ * @param num
+ */
 function tinf_build_tree(t, lengths, off, num) {
     var i, sum;
 
@@ -143,6 +170,10 @@ function tinf_build_tree(t, lengths, off, num) {
  * ---------------------- */
 
 /* get one bit from source stream */
+/**
+ *
+ * @param d
+ */
 function tinf_getbit(d) {
     /* check if tag is empty */
     if (!d.bitcount--) {
@@ -159,6 +190,12 @@ function tinf_getbit(d) {
 }
 
 /* read a num bit value from a stream and add base */
+/**
+ *
+ * @param d
+ * @param num
+ * @param base
+ */
 function tinf_read_bits(d, num, base) {
     if (!num)
         return base;
@@ -175,6 +212,11 @@ function tinf_read_bits(d, num, base) {
 }
 
 /* given a data stream and a tree, decode a symbol */
+/**
+ *
+ * @param d
+ * @param t
+ */
 function tinf_decode_symbol(d, t) {
     while (d.bitcount < 24) {
         d.tag |= d.source[d.sourceIndex++] << d.bitcount;
@@ -201,6 +243,12 @@ function tinf_decode_symbol(d, t) {
 }
 
 /* given a data stream, decode dynamic trees from it */
+/**
+ *
+ * @param d
+ * @param lt
+ * @param dt
+ */
 function tinf_decode_trees(d, lt, dt) {
     var hlit, hdist, hclen;
     var i, num, length;
@@ -267,6 +315,12 @@ function tinf_decode_trees(d, lt, dt) {
  * ----------------------------- */
 
 /* given a stream and two trees, inflate a block of data */
+/**
+ *
+ * @param d
+ * @param lt
+ * @param dt
+ */
 function tinf_inflate_block_data(d, lt, dt) {
     for (;;) {
         var sym = tinf_decode_symbol(d, lt);
@@ -301,6 +355,10 @@ function tinf_inflate_block_data(d, lt, dt) {
 }
 
 /* inflate an uncompressed block of data */
+/**
+ *
+ * @param d
+ */
 function tinf_inflate_uncompressed_block(d) {
     var length, invlength;
     var i;
@@ -336,6 +394,11 @@ function tinf_inflate_uncompressed_block(d) {
 }
 
 /* inflate stream from source to dest */
+/**
+ *
+ * @param source
+ * @param dest
+ */
 export function tinf_uncompress(source, dest) {
     var d = new Data(source, dest);
     var bfinal, btype, res;

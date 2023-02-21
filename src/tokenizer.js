@@ -4,6 +4,7 @@
 
 /**
  * Create a new token
+ *
  * @param {string} char a single char
  */
 function Token(char) {
@@ -14,6 +15,7 @@ function Token(char) {
 
 /**
  * Create a new context range
+ *
  * @param {number} startIndex range start index
  * @param {number} endOffset range end index offset
  * @param {string} contextName owner context name
@@ -26,9 +28,10 @@ function ContextRange(startIndex, endOffset, contextName) {
 
 /**
  * Check context start and end
+ *
  * @param {string} contextName a unique context name
- * @param {function} checkStart a predicate function the indicates a context's start
- * @param {function} checkEnd a predicate function the indicates a context's end
+ * @param {Function} checkStart a predicate function the indicates a context's start
+ * @param {Function} checkEnd a predicate function the indicates a context's end
  */
 function ContextChecker(contextName, checkStart, checkEnd) {
     this.contextName = contextName;
@@ -40,14 +43,15 @@ function ContextChecker(contextName, checkStart, checkEnd) {
 
 /**
  * @typedef ContextParams
- * @type Object
- * @property {array} context context items
+ * @type {Object}
+ * @property {Array} context context items
  * @property {number} currentIndex current item index
  */
 
 /**
  * Create a context params
- * @param {array} context a list of items
+ *
+ * @param {Array} context a list of items
  * @param {number} currentIndex current item index
  */
 function ContextParams(context, currentIndex) {
@@ -61,6 +65,7 @@ function ContextParams(context, currentIndex) {
 
 /**
  * Create an event instance
+ *
  * @param {string} eventId event unique id
  */
 function Event(eventId) {
@@ -70,6 +75,7 @@ function Event(eventId) {
 
 /**
  * Initialize a core events and auto subscribe required event handlers
+ *
  * @param {any} events an object that enlists core events handlers
  */
 function initializeCoreEvents(events) {
@@ -106,6 +112,7 @@ function initializeCoreEvents(events) {
 
 /**
  * Converts a string into a list of tokens
+ *
  * @param {any} events tokenizer core events
  */
 function Tokenizer(events) {
@@ -120,6 +127,7 @@ function Tokenizer(events) {
 
 /**
  * Sets the state of a token, usually called by a state modifier.
+ *
  * @param {string} key state item key
  * @param {any} value state item value
  */
@@ -135,6 +143,7 @@ Token.prototype.getState = function (stateId) {
 
 /**
  * Checks if an index exists in the tokens list.
+ *
  * @param {number} index token index
  */
 Tokenizer.prototype.inboundIndex = function(index) {
@@ -143,7 +152,8 @@ Tokenizer.prototype.inboundIndex = function(index) {
 
 /**
  * Compose and apply a list of operations (replace, update, delete)
- * @param {array} RUDs replace, update and delete operations
+ *
+ * @param {Array} RUDs replace, update and delete operations
  * TODO: Perf. Optimization (lengthBefore === lengthAfter ? dispatch once)
  */
 Tokenizer.prototype.composeRUD = function (RUDs) {
@@ -166,6 +176,7 @@ Tokenizer.prototype.composeRUD = function (RUDs) {
 
 /**
  * Replace a range of tokens with a list of tokens
+ *
  * @param {number} startIndex range start index
  * @param {number} offset range offset
  * @param {token} tokens a list of tokens to replace
@@ -187,6 +198,7 @@ Tokenizer.prototype.replaceRange = function (startIndex, offset, tokens, silent)
 
 /**
  * Replace a token with another token
+ *
  * @param {number} index token index
  * @param {token} token a token to replace
  * @param {boolean} silent dispatch events and update context ranges
@@ -203,6 +215,7 @@ Tokenizer.prototype.replaceToken = function (index, token, silent) {
 
 /**
  * Removes a range of tokens
+ *
  * @param {number} startIndex range start index
  * @param {number} offset range offset
  * @param {boolean} silent dispatch events and update context ranges
@@ -216,6 +229,7 @@ Tokenizer.prototype.removeRange = function(startIndex, offset, silent) {
 
 /**
  * Remove a token at a certain index
+ *
  * @param {number} index token index
  * @param {boolean} silent dispatch events and update context ranges
  */
@@ -231,7 +245,8 @@ Tokenizer.prototype.removeToken = function(index, silent) {
 
 /**
  * Insert a list of tokens at a certain index
- * @param {array} tokens a list of tokens to insert
+ *
+ * @param {Array} tokens a list of tokens to insert
  * @param {number} index insert the list of tokens at index
  * @param {boolean} silent dispatch events and update context ranges
  */
@@ -252,9 +267,10 @@ Tokenizer.prototype.insertToken = function (tokens, index, silent) {
 
 /**
  * A state modifier that is called on 'newToken' event
+ *
  * @param {string} modifierId state modifier id
- * @param {function} condition a predicate function that returns true or false
- * @param {function} modifier a function to update token state
+ * @param {Function} condition a predicate function that returns true or false
+ * @param {Function} modifier a function to update token state
  */
 Tokenizer.prototype.registerModifier = function(modifierId, condition, modifier) {
     this.events.newToken.subscribe(function(token, contextParams) {
@@ -274,7 +290,8 @@ Tokenizer.prototype.registerModifier = function(modifierId, condition, modifier)
 
 /**
  * Subscribe a handler to an event
- * @param {function} eventHandler an event handler function
+ *
+ * @param {Function} eventHandler an event handler function
  */
 Event.prototype.subscribe = function (eventHandler) {
     if (typeof eventHandler === 'function') {
@@ -286,6 +303,7 @@ Event.prototype.subscribe = function (eventHandler) {
 
 /**
  * Unsubscribe an event handler
+ *
  * @param {string} subsId subscription id
  */
 Event.prototype.unsubscribe = function (subsId) {
@@ -294,6 +312,7 @@ Event.prototype.unsubscribe = function (subsId) {
 
 /**
  * Sets context params current value index
+ *
  * @param {number} index context params current value index
  */
 ContextParams.prototype.setCurrentIndex = function(index) {
@@ -308,6 +327,7 @@ ContextParams.prototype.setCurrentIndex = function(index) {
  * example (current value is 3):
  *  1    2   [3]   4    5   |   items values
  * -2   -1    0    1    2   |   offset values
+ *
  * @param {number} offset an offset from current value index
  */
 ContextParams.prototype.get = function (offset) {
@@ -325,6 +345,7 @@ ContextParams.prototype.get = function (offset) {
 
 /**
  * Converts a context range into a string value
+ *
  * @param {contextRange} range a context range
  */
 Tokenizer.prototype.rangeToText = function (range) {
@@ -345,6 +366,7 @@ Tokenizer.prototype.getText = function () {
 
 /**
  * Get a context by name
+ *
  * @param {string} contextName context name to get
  */
 Tokenizer.prototype.getContext = function (contextName) {
@@ -354,8 +376,9 @@ Tokenizer.prototype.getContext = function (contextName) {
 
 /**
  * Subscribes a new event handler to an event
+ *
  * @param {string} eventName event name to subscribe to
- * @param {function} eventHandler a function to be invoked on event
+ * @param {Function} eventHandler a function to be invoked on event
  */
 Tokenizer.prototype.on = function(eventName, eventHandler) {
     const event = this.events[eventName];
@@ -368,6 +391,7 @@ Tokenizer.prototype.on = function(eventName, eventHandler) {
 
 /**
  * Dispatches an event
+ *
  * @param {string} eventName event name
  * @param {any} args event handler arguments
  */
@@ -382,9 +406,10 @@ Tokenizer.prototype.dispatch = function(eventName, args) {
 
 /**
  * Register a new context checker
+ *
  * @param {string} contextName a unique context name
- * @param {function} contextStartCheck a predicate function that returns true on context start
- * @param {function} contextEndCheck  a predicate function that returns true on context end
+ * @param {Function} contextStartCheck a predicate function that returns true on context start
+ * @param {Function} contextEndCheck  a predicate function that returns true on context end
  * TODO: call tokenize on registration to update context ranges with the new context.
  */
 Tokenizer.prototype.registerContextChecker = function(contextName, contextStartCheck, contextEndCheck) {
@@ -410,6 +435,7 @@ Tokenizer.prototype.registerContextChecker = function(contextName, contextStartC
 
 /**
  * Gets a context range tokens
+ *
  * @param {contextRange} range a context range
  */
 Tokenizer.prototype.getRangeTokens = function(range) {
@@ -422,6 +448,7 @@ Tokenizer.prototype.getRangeTokens = function(range) {
 
 /**
  * Gets the ranges of a context
+ *
  * @param {string} contextName context name
  */
 Tokenizer.prototype.getContextRanges = function(contextName) {
@@ -461,6 +488,7 @@ Tokenizer.prototype.updateContextsRanges = function () {
 
 /**
  * Sets the end offset of an open range
+ *
  * @param {number} offset range end offset
  * @param {string} contextName context name
  */
@@ -476,6 +504,7 @@ Tokenizer.prototype.setEndOffset = function (offset, contextName) {
 
 /**
  * Runs a context check on the current context
+ *
  * @param {contextParams} contextParams current context params
  */
 Tokenizer.prototype.runContextCheck = function(contextParams) {
@@ -498,6 +527,7 @@ Tokenizer.prototype.runContextCheck = function(contextParams) {
 
 /**
  * Converts a text into a list of tokens
+ *
  * @param {string} text a text to tokenize
  */
 Tokenizer.prototype.tokenize = function (text) {

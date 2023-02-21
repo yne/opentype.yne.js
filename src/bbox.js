@@ -1,5 +1,13 @@
 // The Bounding Box object
 
+/**
+ *
+ * @param v0
+ * @param v1
+ * @param v2
+ * @param v3
+ * @param t
+ */
 function derive(v0, v1, v2, v3, t) {
     return Math.pow(1 - t, 3) * v0 +
         3 * Math.pow(1 - t, 2) * t * v1 +
@@ -14,7 +22,7 @@ function derive(v0, v1, v2, v3, t) {
  *
  * @exports opentype.BoundingBox
  * @class
- * @constructor
+ * @class
  */
 function BoundingBox() {
     this.x1 = Number.NaN;
@@ -33,6 +41,7 @@ BoundingBox.prototype.isEmpty = function() {
 /**
  * Add the point to the bounding box.
  * The x1/y1/x2/y2 coordinates of the bounding box will now encompass the given point.
+ *
  * @param {number} x - The X coordinate of the point.
  * @param {number} y - The Y coordinate of the point.
  */
@@ -67,6 +76,7 @@ BoundingBox.prototype.addPoint = function(x, y) {
  * Add a X coordinate to the bounding box.
  * This extends the bounding box to include the X coordinate.
  * This function is used internally inside of addBezier.
+ *
  * @param {number} x - The X coordinate of the point.
  */
 BoundingBox.prototype.addX = function(x) {
@@ -77,6 +87,7 @@ BoundingBox.prototype.addX = function(x) {
  * Add a Y coordinate to the bounding box.
  * This extends the bounding box to include the Y coordinate.
  * This function is used internally inside of addBezier.
+ *
  * @param {number} y - The Y coordinate of the point.
  */
 BoundingBox.prototype.addY = function(y) {
@@ -86,6 +97,7 @@ BoundingBox.prototype.addY = function(y) {
 /**
  * Add a Bézier curve to the bounding box.
  * This extends the bounding box to include the entire Bézier.
+ *
  * @param {number} x0 - The starting X coordinate.
  * @param {number} y0 - The starting Y coordinate.
  * @param {number} x1 - The X coordinate of the first control point.
@@ -140,6 +152,7 @@ BoundingBox.prototype.addBezier = function(x0, y0, x1, y1, x2, y2, x, y) {
 /**
  * Add a quadratic curve to the bounding box.
  * This extends the bounding box to include the entire quadratic curve.
+ *
  * @param {number} x0 - The starting X coordinate.
  * @param {number} y0 - The starting Y coordinate.
  * @param {number} x1 - The X coordinate of the control point.

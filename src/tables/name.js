@@ -523,6 +523,12 @@ const windowsLanguages = {
 
 // Returns a IETF BCP 47 language code, for example 'zh-Hant'
 // for 'Chinese in the traditional script'.
+/**
+ *
+ * @param platformID
+ * @param languageID
+ * @param ltag
+ */
 function getLanguageCode(platformID, languageID, ltag) {
     switch (platformID) {
         case 0:  // Unicode
@@ -604,6 +610,12 @@ const macLanguageEncodings = {
     146: 'x-mac-gaelic'       // langIrishGaelicScript
 };
 
+/**
+ *
+ * @param platformID
+ * @param encodingID
+ * @param languageID
+ */
 function getEncoding(platformID, encodingID, languageID) {
     switch (platformID) {
         case 0:  // Unicode
@@ -630,6 +642,10 @@ const platforms = {
     3: 'windows'
 };
 
+/**
+ *
+ * @param platformID
+ */
 function getPlatform(platformID) {
     return platforms[platformID];
 }
@@ -637,6 +653,12 @@ function getPlatform(platformID) {
 // Parse the naming `name` table.
 // FIXME: Format 1 additional fields are not supported yet.
 // ltag is the content of the `ltag' table, such as ['en', 'zh-Hans', 'de-CH-1904'].
+/**
+ *
+ * @param data
+ * @param start
+ * @param ltag
+ */
 function parseNameTable(data, start, ltag) {
     const name = {};
     const p = new parse.Parser(data, start);
@@ -687,6 +709,10 @@ function parseNameTable(data, start, ltag) {
 
 // {23: 'foo'} → {'foo': 23}
 // ['bar', 'baz'] → {'bar': 0, 'baz': 1}
+/**
+ *
+ * @param dict
+ */
 function reverseDict(dict) {
     const result = {};
     for (let key in dict) {
@@ -696,6 +722,15 @@ function reverseDict(dict) {
     return result;
 }
 
+/**
+ *
+ * @param platformID
+ * @param encodingID
+ * @param languageID
+ * @param nameID
+ * @param length
+ * @param offset
+ */
 function makeNameRecord(platformID, encodingID, languageID, nameID, length, offset) {
     return new table.Record('NameRecord', [
         {name: 'platformID', type: 'USHORT', value: platformID},
@@ -709,6 +744,11 @@ function makeNameRecord(platformID, encodingID, languageID, nameID, length, offs
 
 // Finds the position of needle in haystack, or -1 if not there.
 // Like String.indexOf(), but for arrays.
+/**
+ *
+ * @param needle
+ * @param haystack
+ */
 function findSubArray(needle, haystack) {
     const needleLength = needle.length;
     const limit = haystack.length - needleLength + 1;
@@ -729,6 +769,11 @@ function findSubArray(needle, haystack) {
     return -1;
 }
 
+/**
+ *
+ * @param s
+ * @param pool
+ */
 function addStringToPool(s, pool) {
     let offset = findSubArray(s, pool);
     if (offset < 0) {
@@ -744,6 +789,11 @@ function addStringToPool(s, pool) {
     return offset;
 }
 
+/**
+ *
+ * @param names
+ * @param ltag
+ */
 function makeNameTable(names, ltag) {
     const platformNameIds = reverseDict(platforms);
     const macLanguageIds = reverseDict(macLanguages);

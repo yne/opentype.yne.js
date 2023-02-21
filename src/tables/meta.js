@@ -8,6 +8,11 @@ import table from '../table.js';
 
 // Parse the metadata `meta` table.
 // https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6meta.html
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseMetaTable(data, start) {
     const p = new parse.Parser(data, start);
     const tableVersion = p.parseULong();
@@ -30,6 +35,10 @@ function parseMetaTable(data, start) {
     return tags;
 }
 
+/**
+ *
+ * @param tags
+ */
 function makeMetaTable(tags) {
     const numTags = Object.keys(tags).length;
     let stringPool = '';

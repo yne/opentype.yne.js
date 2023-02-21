@@ -5,6 +5,10 @@
 import check from '../check.js';
 import parse from '../parse.js';
 
+/**
+ *
+ * @param p
+ */
 function parseWindowsKernTable(p) {
     const pairs = {};
     // Skip nTables.
@@ -25,6 +29,10 @@ function parseWindowsKernTable(p) {
     return pairs;
 }
 
+/**
+ *
+ * @param p
+ */
 function parseMacKernTable(p) {
     const pairs = {};
     // The Mac kern table stores the version as a fixed (32 bits) but we only loaded the first 16 bits.
@@ -54,6 +62,11 @@ function parseMacKernTable(p) {
 }
 
 // Parse the `kern` table which contains kerning pairs.
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseKernTable(data, start) {
     const p = new parse.Parser(data, start);
     const tableVersion = p.parseUShort();

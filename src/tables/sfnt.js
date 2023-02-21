@@ -22,10 +22,18 @@ import meta from './meta.js';
 import colr from './colr.js';
 import cpal from './cpal.js';
 
+/**
+ *
+ * @param v
+ */
 function log2(v) {
     return Math.log(v) / Math.log(2) | 0;
 }
 
+/**
+ *
+ * @param bytes
+ */
 function computeCheckSum(bytes) {
     while (bytes.length % 4 !== 0) {
         bytes.push(0);
@@ -43,6 +51,13 @@ function computeCheckSum(bytes) {
     return sum;
 }
 
+/**
+ *
+ * @param tag
+ * @param checkSum
+ * @param offset
+ * @param length
+ */
 function makeTableRecord(tag, checkSum, offset, length) {
     return new table.Record('Table Record', [
         {name: 'tag', type: 'TAG', value: tag !== undefined ? tag : ''},
@@ -52,6 +67,10 @@ function makeTableRecord(tag, checkSum, offset, length) {
     ]);
 }
 
+/**
+ *
+ * @param tables
+ */
 function makeSfntTable(tables) {
     const sfnt = new table.Table('sfnt', [
         {name: 'version', type: 'TAG', value: 'OTTO'},
@@ -108,6 +127,12 @@ function makeSfntTable(tables) {
 // Get the metrics for a character. If the string has more than one character
 // this function returns metrics for the first available character.
 // You can provide optional fallback metrics if no characters are available.
+/**
+ *
+ * @param font
+ * @param chars
+ * @param notFoundMetrics
+ */
 function metricsForChar(font, chars, notFoundMetrics) {
     for (let i = 0; i < chars.length; i += 1) {
         const glyphIndex = font.charToGlyphIndex(chars[i]);
@@ -120,6 +145,10 @@ function metricsForChar(font, chars, notFoundMetrics) {
     return notFoundMetrics;
 }
 
+/**
+ *
+ * @param vs
+ */
 function average(vs) {
     let sum = 0;
     for (let i = 0; i < vs.length; i += 1) {
@@ -131,6 +160,10 @@ function average(vs) {
 
 // Convert the font object to a SFNT data structure.
 // This structure contains all the necessary tables and metadata to create a binary OTF file.
+/**
+ *
+ * @param font
+ */
 function fontToSfntTable(font) {
     const xMins = [];
     const yMins = [];

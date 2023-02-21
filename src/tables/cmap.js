@@ -5,6 +5,11 @@ import check from '../check.js';
 import parse from '../parse.js';
 import table from '../table.js';
 
+/**
+ *
+ * @param cmap
+ * @param p
+ */
 function parseCmapTableFormat12(cmap, p) {
     //Skip reserved.
     p.parseUShort();
@@ -29,6 +34,14 @@ function parseCmapTableFormat12(cmap, p) {
     }
 }
 
+/**
+ *
+ * @param cmap
+ * @param p
+ * @param data
+ * @param start
+ * @param offset
+ */
 function parseCmapTableFormat4(cmap, p, data, start, offset) {
     // Length in bytes of the sub-tables.
     cmap.length = p.parseUShort();
@@ -81,6 +94,11 @@ function parseCmapTableFormat4(cmap, p, data, start, offset) {
 // Parse the `cmap` table. This table stores the mappings from characters to glyphs.
 // There are many available formats, but we only support the Windows format 4 and 12.
 // This function returns a `CmapEncoding` object or null if no supported format could be found.
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseCmapTable(data, start) {
     const cmap = {};
     cmap.version = parse.getUShort(data, start);
@@ -119,6 +137,12 @@ function parseCmapTable(data, start) {
     return cmap;
 }
 
+/**
+ *
+ * @param t
+ * @param code
+ * @param glyphIndex
+ */
 function addSegment(t, code, glyphIndex) {
     t.segments.push({
         end: code,
@@ -129,6 +153,10 @@ function addSegment(t, code, glyphIndex) {
     });
 }
 
+/**
+ *
+ * @param t
+ */
 function addTerminatorSegment(t) {
     t.segments.push({
         end: 0xFFFF,
@@ -139,6 +167,10 @@ function addTerminatorSegment(t) {
 }
 
 // Make cmap table, format 4 by default, 12 if needed only
+/**
+ *
+ * @param glyphs
+ */
 function makeCmapTable(glyphs) {
     // Plan 0 is the base Unicode Plan but emojis, for example are on another plan, and needs cmap 12 format (with 32bit)
     let isPlan0Only = true;

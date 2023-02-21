@@ -10,6 +10,11 @@ import Path from '../path.js';
 import table from '../table.js';
 
 // Custom equals function that can also check lists.
+/**
+ *
+ * @param a
+ * @param b
+ */
 function equals(a, b) {
     if (a === b) {
         return true;
@@ -32,6 +37,10 @@ function equals(a, b) {
 
 // Subroutines are encoded using the negative half of the number space.
 // See type 2 chapter 4.7 "Subroutine operators".
+/**
+ *
+ * @param subrs
+ */
 function calcCFFSubroutineBias(subrs) {
     let bias;
     if (subrs.length < 1240) {
@@ -47,6 +56,12 @@ function calcCFFSubroutineBias(subrs) {
 
 // Parse a `CFF` INDEX array.
 // An index array consists of a list of offsets, then a list of objects at those offsets.
+/**
+ *
+ * @param data
+ * @param start
+ * @param conversionFn
+ */
 function parseCFFIndex(data, start, conversionFn) {
     const offsets = [];
     const objects = [];
@@ -80,6 +95,11 @@ function parseCFFIndex(data, start, conversionFn) {
     return {objects: objects, startOffset: start, endOffset: endOffset};
 }
 
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseCFFIndexLowMemory(data, start) {
     const offsets = [];
     const count = parse.getCard16(data, start);
@@ -102,6 +122,14 @@ function parseCFFIndexLowMemory(data, start) {
 
     return {offsets: offsets, startOffset: start, endOffset: endOffset};
 }
+/**
+ *
+ * @param i
+ * @param offsets
+ * @param data
+ * @param start
+ * @param conversionFn
+ */
 function getCffIndexObject(i, offsets, data, start, conversionFn) {
     const count = parse.getCard16(data, start);
     let objectOffset = 0;
@@ -118,6 +146,10 @@ function getCffIndexObject(i, offsets, data, start, conversionFn) {
 }
 
 // Parse a `CFF` DICT real value.
+/**
+ *
+ * @param parser
+ */
 function parseFloatOperand(parser) {
     let s = '';
     const eof = 15;
@@ -144,6 +176,11 @@ function parseFloatOperand(parser) {
 }
 
 // Parse a `CFF` DICT operand.
+/**
+ *
+ * @param parser
+ * @param b0
+ */
 function parseOperand(parser, b0) {
     let b1;
     let b2;
@@ -186,6 +223,10 @@ function parseOperand(parser, b0) {
 
 // Convert the entries returned by `parseDict` to a proper dictionary.
 // If a value is a list of one, it is unpacked.
+/**
+ *
+ * @param entries
+ */
 function entriesToObject(entries) {
     const o = {};
     for (let i = 0; i < entries.length; i += 1) {
@@ -210,6 +251,12 @@ function entriesToObject(entries) {
 
 // Parse a `CFF` DICT object.
 // A dictionary contains key-value pairs in a compact tokenized format.
+/**
+ *
+ * @param data
+ * @param start
+ * @param size
+ */
 function parseCFFDict(data, start, size) {
     start = start !== undefined ? start : 0;
     const parser = new parse.Parser(data, start);
@@ -242,6 +289,11 @@ function parseCFFDict(data, start, size) {
 
 // Given a String Index (SID), return the value of the string.
 // Strings below index 392 are standard CFF strings and are not encoded in the font.
+/**
+ *
+ * @param strings
+ * @param index
+ */
 function getCFFString(strings, index) {
     if (index <= 390) {
         index = cffStandardStrings[index];
@@ -254,6 +306,12 @@ function getCFFString(strings, index) {
 
 // Interpret a dictionary and return a new dictionary with readable keys and values for missing entries.
 // This function takes `meta` which is a list of objects containing `operand`, `name` and `default`.
+/**
+ *
+ * @param dict
+ * @param meta
+ * @param strings
+ */
 function interpretDict(dict, meta, strings) {
     const newDict = {};
     let value;
@@ -294,6 +352,11 @@ function interpretDict(dict, meta, strings) {
 }
 
 // Parse the CFF header.
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseCFFHeader(data, start) {
     const header = {};
     header.formatMajor = parse.getCard8(data, start);
@@ -351,12 +414,24 @@ const PRIVATE_DICT_META = [
 
 // Parse the CFF top dictionary. A CFF table can contain multiple fonts, each with their own top dictionary.
 // The top dictionary contains the essential metadata for the font, together with the private dictionary.
+/**
+ *
+ * @param data
+ * @param strings
+ */
 function parseCFFTopDict(data, strings) {
     const dict = parseCFFDict(data, 0, data.byteLength);
     return interpretDict(dict, TOP_DICT_META, strings);
 }
 
 // Parse the CFF private dictionary. We don't fully parse out all the values, only the ones we need.
+/**
+ *
+ * @param data
+ * @param start
+ * @param size
+ * @param strings
+ */
 function parseCFFPrivateDict(data, start, size, strings) {
     const dict = parseCFFDict(data, start, size);
     return interpretDict(dict, PRIVATE_DICT_META, strings);
@@ -377,6 +452,13 @@ function parseCFFPrivateDict(data, start, size, strings) {
 //    _nominalWidthX   bias added to width embedded within glyph description
 //
 //    _privateDict     saved copy of parsed Private DICT from Top DICT
+/**
+ *
+ * @param data
+ * @param start
+ * @param cffIndex
+ * @param strings
+ */
 function gatherCFFTopDicts(data, start, cffIndex, strings) {
     const topDictArray = [];
     for (let iTopDict = 0; iTopDict < cffIndex.length; iTopDict += 1) {
@@ -408,6 +490,13 @@ function gatherCFFTopDicts(data, start, cffIndex, strings) {
 // Parse the CFF charset table, which contains internal names for all the glyphs.
 // This function will return a list of glyph names.
 // See Adobe TN #5176 chapter 13, "Charsets".
+/**
+ *
+ * @param data
+ * @param start
+ * @param nGlyphs
+ * @param strings
+ */
 function parseCFFCharset(data, start, nGlyphs, strings) {
     let sid;
     let count;
@@ -450,6 +539,12 @@ function parseCFFCharset(data, start, nGlyphs, strings) {
 
 // Parse the CFF encoding data. Only one encoding can be specified per font.
 // See Adobe TN #5176 chapter 12, "Encodings".
+/**
+ *
+ * @param data
+ * @param start
+ * @param charset
+ */
 function parseCFFEncoding(data, start, charset) {
     let code;
     const enc = {};
@@ -482,6 +577,12 @@ function parseCFFEncoding(data, start, charset) {
 // Take in charstring code and return a Glyph object.
 // The encoding is described in the Type 2 Charstring Format
 // https://www.microsoft.com/typography/OTSPEC/charstr2.htm
+/**
+ *
+ * @param font
+ * @param glyph
+ * @param code
+ */
 function parseCFFCharstring(font, glyph, code) {
     let c1x;
     let c1y;
@@ -513,6 +614,11 @@ function parseCFFCharstring(font, glyph, code) {
     }
     let width = defaultWidthX;
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     function newContour(x, y) {
         if (open) {
             p.closePath();
@@ -522,6 +628,9 @@ function parseCFFCharstring(font, glyph, code) {
         open = true;
     }
 
+    /**
+     *
+     */
     function parseStems() {
         let hasWidthArg;
 
@@ -537,6 +646,10 @@ function parseCFFCharstring(font, glyph, code) {
         haveWidth = true;
     }
 
+    /**
+     *
+     * @param code
+     */
     function parse(code) {
         let b1;
         let b2;
@@ -902,6 +1015,13 @@ function parseCFFCharstring(font, glyph, code) {
     return p;
 }
 
+/**
+ *
+ * @param data
+ * @param start
+ * @param nGlyphs
+ * @param fdArrayCount
+ */
 function parseCFFFDSelect(data, start, nGlyphs, fdArrayCount) {
     const fdSelect = [];
     let fdIndex;
@@ -948,6 +1068,13 @@ function parseCFFFDSelect(data, start, nGlyphs, fdArrayCount) {
 }
 
 // Parse the `CFF` table, which contains the glyph outlines in PostScript format.
+/**
+ *
+ * @param data
+ * @param start
+ * @param font
+ * @param opt
+ */
 function parseCFFTable(data, start, font, opt) {
     font.tables.cff = {};
     const header = parseCFFHeader(data, start);
@@ -1044,6 +1171,11 @@ function parseCFFTable(data, start, font, opt) {
 
 // Convert a string to a String ID (SID).
 // The list of strings is modified in place.
+/**
+ *
+ * @param s
+ * @param strings
+ */
 function encodeString(s, strings) {
     let sid;
 
@@ -1065,6 +1197,9 @@ function encodeString(s, strings) {
     return sid;
 }
 
+/**
+ *
+ */
 function makeHeader() {
     return new table.Record('Header', [
         {name: 'major', type: 'Card8', value: 1},
@@ -1074,6 +1209,10 @@ function makeHeader() {
     ]);
 }
 
+/**
+ *
+ * @param fontNames
+ */
 function makeNameIndex(fontNames) {
     const t = new table.Record('Name INDEX', [
         {name: 'names', type: 'INDEX', value: []}
@@ -1087,6 +1226,12 @@ function makeNameIndex(fontNames) {
 }
 
 // Given a dictionary's metadata, create a DICT structure.
+/**
+ *
+ * @param meta
+ * @param attrs
+ * @param strings
+ */
 function makeDict(meta, attrs, strings) {
     const m = {};
     for (let i = 0; i < meta.length; i += 1) {
@@ -1105,6 +1250,11 @@ function makeDict(meta, attrs, strings) {
 }
 
 // The Top DICT houses the global font attributes.
+/**
+ *
+ * @param attrs
+ * @param strings
+ */
 function makeTopDict(attrs, strings) {
     const t = new table.Record('Top DICT', [
         {name: 'dict', type: 'DICT', value: {}}
@@ -1113,6 +1263,10 @@ function makeTopDict(attrs, strings) {
     return t;
 }
 
+/**
+ *
+ * @param topDict
+ */
 function makeTopDictIndex(topDict) {
     const t = new table.Record('Top DICT INDEX', [
         {name: 'topDicts', type: 'INDEX', value: []}
@@ -1121,6 +1275,10 @@ function makeTopDictIndex(topDict) {
     return t;
 }
 
+/**
+ *
+ * @param strings
+ */
 function makeStringIndex(strings) {
     const t = new table.Record('String INDEX', [
         {name: 'strings', type: 'INDEX', value: []}
@@ -1133,6 +1291,9 @@ function makeStringIndex(strings) {
     return t;
 }
 
+/**
+ *
+ */
 function makeGlobalSubrIndex() {
     // Currently we don't use subroutines.
     return new table.Record('Global Subr INDEX', [
@@ -1140,6 +1301,11 @@ function makeGlobalSubrIndex() {
     ]);
 }
 
+/**
+ *
+ * @param glyphNames
+ * @param strings
+ */
 function makeCharsets(glyphNames, strings) {
     const t = new table.Record('Charsets', [
         {name: 'format', type: 'Card8', value: 0}
@@ -1153,6 +1319,10 @@ function makeCharsets(glyphNames, strings) {
     return t;
 }
 
+/**
+ *
+ * @param glyph
+ */
 function glyphToOps(glyph) {
     const ops = [];
     const path = glyph.path;
@@ -1222,6 +1392,10 @@ function glyphToOps(glyph) {
     return ops;
 }
 
+/**
+ *
+ * @param glyphs
+ */
 function makeCharStringsIndex(glyphs) {
     const t = new table.Record('CharStrings INDEX', [
         {name: 'charStrings', type: 'INDEX', value: []}
@@ -1236,6 +1410,11 @@ function makeCharStringsIndex(glyphs) {
     return t;
 }
 
+/**
+ *
+ * @param attrs
+ * @param strings
+ */
 function makePrivateDict(attrs, strings) {
     const t = new table.Record('Private DICT', [
         {name: 'dict', type: 'DICT', value: {}}
@@ -1244,6 +1423,11 @@ function makePrivateDict(attrs, strings) {
     return t;
 }
 
+/**
+ *
+ * @param glyphs
+ * @param options
+ */
 function makeCFFTable(glyphs, options) {
     const t = new table.Table('CFF ', [
         {name: 'header', type: 'RECORD'},

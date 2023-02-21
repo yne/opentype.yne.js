@@ -2,7 +2,9 @@ import { SubstitutionAction } from './featureQuery.js';
 
 /**
  * Apply single substitution format 1
+ *
  * @param {Array} substitutions substitutions
+ * @param action
  * @param {any} tokens a list of tokens
  * @param {number} index token index
  */
@@ -12,7 +14,9 @@ function singleSubstitutionFormat1(action, tokens, index) {
 
 /**
  * Apply single substitution format 2
+ *
  * @param {Array} substitutions substitutions
+ * @param action
  * @param {any} tokens a list of tokens
  * @param {number} index token index
  */
@@ -22,7 +26,9 @@ function singleSubstitutionFormat2(action, tokens, index) {
 
 /**
  * Apply chaining context substitution format 3
+ *
  * @param {Array} substitutions substitutions
+ * @param action
  * @param {any} tokens a list of tokens
  * @param {number} index token index
  */
@@ -35,7 +41,9 @@ function chainingSubstitutionFormat3(action, tokens, index) {
 
 /**
  * Apply ligature substitution format 1
+ *
  * @param {Array} substitutions substitutions
+ * @param action
  * @param {any} tokens a list of tokens
  * @param {number} index token index
  */
@@ -61,7 +69,9 @@ const SUBSTITUTIONS = {
 
 /**
  * Apply substitutions to a list of tokens
+ *
  * @param {Array} substitutions substitutions
+ * @param action
  * @param {any} tokens a list of tokens
  * @param {number} index token index
  */

@@ -4,6 +4,10 @@
 
 import { isArabicChar, isWhiteSpace, isTashkeelArabicChar } from '../../../char.js';
 
+/**
+ *
+ * @param contextParams
+ */
 function arabicSentenceStartCheck(contextParams) {
     const char = contextParams.current;
     const prevChar = contextParams.get(-1);
@@ -14,6 +18,10 @@ function arabicSentenceStartCheck(contextParams) {
     );
 }
 
+/**
+ *
+ * @param contextParams
+ */
 function arabicSentenceEndCheck(contextParams) {
     const nextChar = contextParams.get(1);
     switch (true) {

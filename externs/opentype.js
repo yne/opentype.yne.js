@@ -18,7 +18,7 @@ opentype.Font = function(options) {};
 /**
  * Check if the font has a glyph for the given character.
  * @param  {string}
- * @return {Boolean}
+ * @returns {Boolean}
  */
 opentype.Font.prototype.hasChar = function(c) {};
 
@@ -27,7 +27,7 @@ opentype.Font.prototype.hasChar = function(c) {};
  * Note that this function assumes that there is a one-to-one mapping between
  * the given character and a glyph; for complex scripts this might not be the case.
  * @param  {string}
- * @return {Number}
+ * @returns {Number}
  */
 opentype.Font.prototype.charToGlyphIndex = function(s) {};
 
@@ -36,7 +36,7 @@ opentype.Font.prototype.charToGlyphIndex = function(s) {};
  * Note that this function assumes that there is a one-to-one mapping between
  * the given character and a glyph; for complex scripts this might not be the case.
  * @param  {string} c
- * @return {opentype.Glyph}
+ * @returns {opentype.Glyph}
  */
 opentype.Font.prototype.charToGlyph = function(c) {};
 
@@ -47,25 +47,25 @@ opentype.Font.prototype.charToGlyph = function(c) {};
  * length of the given string.
  * @param  {string} s
  * @param  {Object=} options
- * @return {opentype.Glyph[]}
+ * @returns {opentype.Glyph[]}
  */
 opentype.Font.prototype.stringToGlyphs = function(s, options) {};
 
 /**
  * @param  {string}
- * @return {Number}
+ * @returns {Number}
  */
 opentype.Font.prototype.nameToGlyphIndex = function(name) {};
 
 /**
  * @param  {string}
- * @return {opentype.Glyph}
+ * @returns {opentype.Glyph}
  */
 opentype.Font.prototype.nameToGlyph = function(name) {};
 
 /**
  * @param  {Number}
- * @return {String}
+ * @returns {String}
  */
 opentype.Font.prototype.glyphIndexToName = function(gid) {};
 
@@ -76,7 +76,7 @@ opentype.Font.prototype.glyphIndexToName = function(gid) {};
  * between glyphs.
  * @param  {opentype.Glyph} leftGlyph
  * @param  {opentype.Glyph} rightGlyph
- * @return {Number}
+ * @returns {Number}
  */
 opentype.Font.prototype.getKerningValue = function(leftGlyph, rightGlyph) {};
 
@@ -98,7 +98,7 @@ opentype.Font.prototype.forEachGlyph = function(text, x, y, fontSize, options, c
  * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
  * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
  * @param  {Object=} options
- * @return {opentype.Path}
+ * @returns {opentype.Path}
  */
 opentype.Font.prototype.getPath = function(text, x, y, fontSize, options) {};
 
@@ -109,7 +109,7 @@ opentype.Font.prototype.getPath = function(text, x, y, fontSize, options) {};
  * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
  * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
  * @param  {Object=} options
- * @return {opentype.Path[]}
+ * @returns {opentype.Path[]}
  */
 opentype.Font.prototype.getPaths = function(text, x, y, fontSize, options) {};
 
@@ -152,7 +152,7 @@ opentype.Font.prototype.drawMetrics = function(ctx, text, x, y, fontSize, option
 
 /**
  * @param  {string}
- * @return {string}
+ * @returns {string}
  */
 opentype.Font.prototype.getEnglishName = function(name) {};
 
@@ -190,7 +190,7 @@ opentype.Font.prototype.validate = function() {};
 /**
  * Convert the font object to a SFNT data structure.
  * This structure contains all the necessary tables and metadata to create a binary OTF file.
- * @return {opentype.Table}
+ * @returns {opentype.Table}
  */
 opentype.Font.prototype.toTables = function() {};
 /**
@@ -199,7 +199,7 @@ opentype.Font.prototype.toTables = function() {};
 opentype.Font.prototype.toBuffer = function() {};
 /**
  * Converts a `opentype.Font` into an `ArrayBuffer`
- * @return {ArrayBuffer}
+ * @returns {ArrayBuffer}
  */
 opentype.Font.prototype.toArrayBuffer = function() {};
 
@@ -227,7 +227,7 @@ opentype.Glyph.prototype.addUnicode = function(unicode) {};
 
 /**
  * Calculate the minimum bounding box for this glyph.
- * @return {opentype.BoundingBox}
+ * @returns {opentype.BoundingBox}
  */
 opentype.Glyph.prototype.getBoundingBox = function() {};
 
@@ -237,7 +237,7 @@ opentype.Glyph.prototype.getBoundingBox = function() {};
  * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
  * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
  * @param  {Object=} options - xScale, yScale to strech the glyph.
- * @return {opentype.Path}
+ * @returns {opentype.Path}
  */
 opentype.Glyph.prototype.getPath = function(x, y, fontSize, options) {};
 
@@ -245,13 +245,13 @@ opentype.Glyph.prototype.getPath = function(x, y, fontSize, options) {};
  * Split the glyph into contours.
  * This function is here for backwards compatibility, and to
  * provide raw access to the TrueType glyph outlines.
- * @return {Array}
+ * @returns {Array}
  */
 opentype.Glyph.prototype.getContours = function() {};
 
 /**
  * Calculate the xMin/yMin/xMax/yMax/lsb/rsb for a Glyph.
- * @return {Object}
+ * @returns {Object}
  */
 opentype.Glyph.prototype.getMetrics = function() {};
 
@@ -375,20 +375,20 @@ opentype.Path.prototype.draw = function(ctx) {};
 
 /**
  * @param  {number} [decimalPlaces=2] - The amount of decimal places for floating-point values
- * @return {string}
+ * @returns {string}
  */
 opentype.Path.prototype.toPathData = function(decimalPlaces) {};
 
 /**
  * @param  {number} [decimalPlaces=2] - The amount of decimal places for floating-point values
- * @return {string}
+ * @returns {string}
  */
 opentype.Path.prototype.toSVG = function(decimalPlaces) {};
 
 /**
  * Convert the path to a DOM element.
  * @param  {number} [decimalPlaces=2] - The amount of decimal places for floating-point values
- * @return {SVGPathElement}
+ * @returns {SVGPathElement}
  */
 opentype.Path.prototype.toDOMElement = function(decimalPlaces) {};
 
@@ -401,7 +401,7 @@ opentype.Layout = function(font, tableName) {};
  * Binary search an object by "tag" property
  * @param  {Array} arr
  * @param  {string} tag
- * @return {number}
+ * @returns {number}
  */
 opentype.Layout.prototype.searchTag = function(arr, tag) {};
 
@@ -409,21 +409,21 @@ opentype.Layout.prototype.searchTag = function(arr, tag) {};
  * Binary search in a list of numbers
  * @param  {Array} arr
  * @param  {number} value
- * @return {number}
+ * @returns {number}
  */
 opentype.Layout.prototype.binSearch = function (arr, value) {};
 
 /**
  * Get or create the Layout table (GSUB, GPOS etc).
  * @param  {boolean} create - Whether to create a new one.
- * @return {Object} The GSUB or GPOS table.
+ * @returns {Object} The GSUB or GPOS table.
  */
 opentype.Layout.prototype.getTable = function(create) {};
 
 /**
  * Returns all scripts in the substitution table.
  * @instance
- * @return {Array}
+ * @returns {Array}
  */
 opentype.Layout.prototype.getScriptNames = function() {};
 
@@ -432,7 +432,7 @@ opentype.Layout.prototype.getScriptNames = function() {};
  * @instance
  * @param {string} script - Use 'DFLT' for default script
  * @param {boolean} create - forces the creation of this script table if it doesn't exist.
- * @return {Array} Array on names
+ * @returns {Array} Array on names
  */
 opentype.Layout.prototype.getScriptTable = function(script, create) {};
 
@@ -442,7 +442,7 @@ opentype.Layout.prototype.getScriptTable = function(script, create) {};
  * @param {string} script - Use 'DFLT' for default script
  * @param {string} language - Use 'dlft' for default language
  * @param {boolean} create - forces the creation of this langSysTable if it doesn't exist.
- * @return {Object} An object with tag and script properties.
+ * @returns {Object} An object with tag and script properties.
  */
 opentype.Layout.prototype.getLangSysTable = function(script, language, create) {};
 
@@ -453,7 +453,7 @@ opentype.Layout.prototype.getLangSysTable = function(script, language, create) {
  * @param {string} language - Use 'dlft' for default language
  * @param {string} feature - One of the codes listed at https://www.microsoft.com/typography/OTSPEC/featurelist.htm
  * @param {boolean} create - forces the creation of the feature table if it doesn't exist.
- * @return {Object}
+ * @returns {Object}
  */
 opentype.Layout.prototype.getFeatureTable = function(script, language, feature, create) {};
 
@@ -465,7 +465,7 @@ opentype.Layout.prototype.getFeatureTable = function(script, language, feature, 
  * @param {string} feature - 4-letter feature code
  * @param {number} lookupType - 1 to 8
  * @param {boolean} create - forces the creation of the lookup table if it doesn't exist, with no subtables.
- * @return {Object[]}
+ * @returns {Object[]}
  */
 opentype.Layout.prototype.getLookupTables = function(script, language, feature, lookupType, create) {};
 
@@ -475,7 +475,7 @@ opentype.Layout.prototype.getLookupTables = function(script, language, feature, 
  * Format 2: compact list as range records.
  * @instance
  * @param  {Object} coverageTable
- * @return {Array}
+ * @returns {Array}
  */
 opentype.Layout.prototype.expandCoverage = function(coverageTable) {};
 
@@ -488,7 +488,7 @@ opentype.Substitution = function(font) {};
 
 /**
  * Create a default GSUB table.
- * @return {Object} gsub - The GSUB table.
+ * @returns {Object} gsub - The GSUB table.
  */
 opentype.Substitution.prototype.createDefaultTable = function() {};
 
@@ -497,7 +497,7 @@ opentype.Substitution.prototype.createDefaultTable = function() {};
  * @param {string} script
  * @param {string} language
  * @param {string} feature - 4-character feature name ('aalt', 'salt', 'ss01'...)
- * @return {Array} substitutions - The list of substitutions.
+ * @returns {Array} substitutions - The list of substitutions.
  */
 opentype.Substitution.prototype.getSingle = function(feature, script, language) {};
 
@@ -506,7 +506,7 @@ opentype.Substitution.prototype.getSingle = function(feature, script, language) 
  * @param {string} feature - 4-character feature name ('aalt', 'salt'...)
  * @param {string} script
  * @param {string} language
- * @return {Array} alternates - The list of alternates
+ * @returns {Array} alternates - The list of alternates
  */
 opentype.Substitution.prototype.getAlternates = function(feature, script, language) {};
 
@@ -516,7 +516,7 @@ opentype.Substitution.prototype.getAlternates = function(feature, script, langua
  * @param {string} feature - 4-letter feature name ('liga', 'rlig', 'dlig'...)
  * @param {string} script
  * @param {string} language
- * @return {Array} ligatures - The list of ligatures.
+ * @returns {Array} ligatures - The list of ligatures.
  */
 opentype.Substitution.prototype.getLigatures = function(feature, script, language) {};
 
@@ -524,7 +524,7 @@ opentype.Substitution.prototype.getLigatures = function(feature, script, languag
  * Add or modify a single substitution (lookup type 1)
  * Format 2, more flexible, is always used.
  * @param {string} feature - 4-letter feature name ('liga', 'rlig', 'dlig'...)
- * @param {Object} substitution - { sub: id, delta: number } for format 1 or { sub: id, by: id } for format 2.
+ * @param {object} substitution - { sub: id, delta: number } for format 1 or { sub: id, by: id } for format 2.
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
  */
@@ -533,7 +533,7 @@ opentype.Substitution.prototype.addSingle = function(feature, substitution, scri
 /**
  * Add or modify an alternate substitution (lookup type 1)
  * @param {string} feature - 4-letter feature name ('liga', 'rlig', 'dlig'...)
- * @param {Object} substitution - { sub: id, by: [ids] }
+ * @param {object} substitution - { sub: id, by: [ids] }
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
  */
@@ -543,7 +543,7 @@ opentype.Substitution.prototype.addAlternate = function(feature, substitution, s
  * Add a ligature (lookup type 4)
  * Ligatures with more components must be stored ahead of those with fewer components in order to be found
  * @param {string} feature - 4-letter feature name ('liga', 'rlig', 'dlig'...)
- * @param {Object} ligature - { sub: [ids], by: id }
+ * @param {object} ligature - { sub: [ids], by: id }
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
  */
@@ -554,15 +554,15 @@ opentype.Substitution.prototype.addLigature = function(feature, ligature, script
  * @param {string} feature - 4-letter feature name
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
- * @return {[type]} [description]
- * @return {Array} substitutions - The list of substitutions.
+ * @returns {[type]} [description]
+ * @returns {Array} substitutions - The list of substitutions.
  */
 opentype.Substitution.prototype.getFeature = function(feature, script, language) {};
 
 /**
  * Add a substitution to a feature for a given script and language.
  * @param {string} feature - 4-letter feature name
- * @param {Object} sub - the substitution to add (an Object like { sub: id or [ids], by: id or [ids] })
+ * @param {object} sub - the substitution to add (an Object like { sub: id or [ids], by: id or [ids] })
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
  */
@@ -571,20 +571,20 @@ opentype.Substitution.prototype.add = function(feature, sub, script, language) {
 /**
  * @param {string} tableName
  * @param {Array} fields
- * @param {Object} options
+ * @param {object} options
  * @constructor
  */
 opentype.Table = function(tableName, fields, options) {};
 
 /**
  * Encodes the table and returns an array of bytes
- * @return {Array}
+ * @returns {Array}
  */
 opentype.Table.prototype.encode = function() {};
 
 /**
  * Get the size of the table.
- * @return {number}
+ * @returns {number}
  */
 opentype.Table.prototype.sizeOf = function() {};
 
@@ -622,7 +622,7 @@ opentype.FeatureList = function(featureListTable) {};
 /**
  * @extends {opentype.Table}
  * @param {opentype.Table} lookupListTable
- * @param {Object} subtableMakers
+ * @param {object} subtableMakers
  * @constructor
  */
 opentype.LookupList = function(lookupListTable, subtableMakers) {};
@@ -640,12 +640,12 @@ opentype.load = function(url, callback) {};
 
 /**
  * @param  {string} url - The URL of the font to load.
- * @return {opentype.Font}
+ * @returns {opentype.Font}
  */
 opentype.loadSync = function(url) {};
 
 /**
  * @param  {ArrayBuffer}
- * @return {opentype.Font}
+ * @returns {opentype.Font}
  */
 opentype.parse = function(buffer) {};

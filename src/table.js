@@ -8,8 +8,8 @@ import { encode, sizeOf } from './types.js';
  * @class
  * @param {string} tableName
  * @param {Array} fields
- * @param {Object} options
- * @constructor
+ * @param {object} options
+ * @class
  */
 function Table(tableName, fields, options) {
     // For coverage tables with coverage format 2, we do not want to add the coverage data directly to the table object,
@@ -38,7 +38,8 @@ function Table(tableName, fields, options) {
 
 /**
  * Encodes the table and returns an array of bytes
- * @return {Array}
+ *
+ * @returns {Array}
  */
 Table.prototype.encode = function() {
     return encode.TABLE(this);
@@ -46,13 +47,17 @@ Table.prototype.encode = function() {
 
 /**
  * Get the size of the table.
- * @return {number}
+ *
+ * @returns {number}
  */
 Table.prototype.sizeOf = function() {
     return sizeOf.TABLE(this);
 };
 
 /**
+ * @param itemName
+ * @param list
+ * @param count
  * @private
  */
 function ushortList(itemName, list, count) {
@@ -68,6 +73,9 @@ function ushortList(itemName, list, count) {
 }
 
 /**
+ * @param itemName
+ * @param records
+ * @param itemCallback
  * @private
  */
 function tableList(itemName, records, itemCallback) {
@@ -81,6 +89,9 @@ function tableList(itemName, records, itemCallback) {
 }
 
 /**
+ * @param itemName
+ * @param records
+ * @param itemCallback
  * @private
  */
 function recordList(itemName, records, itemCallback) {
@@ -97,10 +108,11 @@ function recordList(itemName, records, itemCallback) {
 
 /**
  * @exports opentype.Coverage
+ * @param coverageTable
  * @class
  * @param {opentype.Table}
- * @constructor
- * @extends opentype.Table
+ * @class
+ * @augments opentype.Table
  */
 function Coverage(coverageTable) {
     if (coverageTable.format === 1) {
@@ -126,6 +138,10 @@ function Coverage(coverageTable) {
 Coverage.prototype = Object.create(Table.prototype);
 Coverage.prototype.constructor = Coverage;
 
+/**
+ *
+ * @param scriptListTable
+ */
 function ScriptList(scriptListTable) {
     Table.call(this, 'scriptListTable',
         recordList('scriptRecord', scriptListTable, function(scriptRecord, i) {
@@ -158,10 +174,11 @@ ScriptList.prototype.constructor = ScriptList;
 
 /**
  * @exports opentype.FeatureList
+ * @param featureListTable
  * @class
  * @param {opentype.Table}
- * @constructor
- * @extends opentype.Table
+ * @class
+ * @augments opentype.Table
  */
 function FeatureList(featureListTable) {
     Table.call(this, 'featureListTable',
@@ -182,10 +199,12 @@ FeatureList.prototype.constructor = FeatureList;
 /**
  * @exports opentype.LookupList
  * @class
+ * @param lookupListTable
+ * @param subtableMakers
  * @param {opentype.Table}
- * @param {Object}
- * @constructor
- * @extends opentype.Table
+ * @param {object}
+ * @class
+ * @augments opentype.Table
  */
 function LookupList(lookupListTable, subtableMakers) {
     Table.call(this, 'lookupListTable', tableList('lookup', lookupListTable, function(lookupTable) {

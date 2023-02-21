@@ -123,9 +123,11 @@ const standardNames = [
  * This is the encoding used for fonts created from scratch.
  * It loops through all glyphs and finds the appropriate unicode value.
  * Since it's linear time, other encodings will be faster.
+ *
  * @exports opentype.DefaultEncoding
+ * @param font
  * @class
- * @constructor
+ * @class
  * @param {opentype.Font}
  */
 function DefaultEncoding(font) {
@@ -151,8 +153,8 @@ DefaultEncoding.prototype.charToGlyphIndex = function(c) {
 /**
  * @exports opentype.CmapEncoding
  * @class
- * @constructor
- * @param {Object} cmap - a object with the cmap encoded data
+ * @class
+ * @param {object} cmap - a object with the cmap encoded data
  */
 function CmapEncoding(cmap) {
     this.cmap = cmap;
@@ -160,7 +162,7 @@ function CmapEncoding(cmap) {
 
 /**
  * @param  {string} c - the character
- * @return {number} The glyph index.
+ * @returns {number} The glyph index.
  */
 CmapEncoding.prototype.charToGlyphIndex = function(c) {
     return this.cmap.glyphIndexMap[c.codePointAt(0)] || 0;
@@ -169,7 +171,7 @@ CmapEncoding.prototype.charToGlyphIndex = function(c) {
 /**
  * @exports opentype.CffEncoding
  * @class
- * @constructor
+ * @class
  * @param {string} encoding - The encoding
  * @param {Array} charset - The character set.
  */
@@ -180,7 +182,7 @@ function CffEncoding(encoding, charset) {
 
 /**
  * @param  {string} s - The character
- * @return {number} The index.
+ * @returns {number} The index.
  */
 CffEncoding.prototype.charToGlyphIndex = function(s) {
     const code = s.codePointAt(0);
@@ -191,8 +193,8 @@ CffEncoding.prototype.charToGlyphIndex = function(s) {
 /**
  * @exports opentype.GlyphNames
  * @class
- * @constructor
- * @param {Object} post
+ * @class
+ * @param {object} post
  */
 function GlyphNames(post) {
     switch (post.version) {
@@ -228,8 +230,9 @@ function GlyphNames(post) {
 
 /**
  * Gets the index of a glyph by name.
+ *
  * @param  {string} name - The glyph name
- * @return {number} The index
+ * @returns {number} The index
  */
 GlyphNames.prototype.nameToGlyphIndex = function(name) {
     return this.names.indexOf(name);
@@ -237,12 +240,16 @@ GlyphNames.prototype.nameToGlyphIndex = function(name) {
 
 /**
  * @param  {number} gid
- * @return {string}
+ * @returns {string}
  */
 GlyphNames.prototype.glyphIndexToName = function(gid) {
     return this.names[gid];
 };
 
+/**
+ *
+ * @param font
+ */
 function addGlyphNamesAll(font) {
     let glyph;
     const glyphIndexMap = font.tables.cmap.glyphIndexMap;
@@ -269,6 +276,10 @@ function addGlyphNamesAll(font) {
     }
 }
 
+/**
+ *
+ * @param font
+ */
 function addGlyphNamesToUnicodeMap(font) {
     font._IndexToUnicodeMap = {};
 
@@ -291,7 +302,9 @@ function addGlyphNamesToUnicodeMap(font) {
 /**
  * @alias opentype.addGlyphNames
  * @param {opentype.Font}
- * @param {Object}
+ * @param font
+ * @param opt
+ * @param {object}
  */
 function addGlyphNames(font, opt) {
     if (opt.lowMemory) {

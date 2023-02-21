@@ -9,6 +9,13 @@ import parse from '../parse.js';
 // The loca table has two versions: a short version where offsets are stored as uShorts, and a long
 // version where offsets are stored as uLongs. The `head` table specifies which version to use
 // (under indexToLocFormat).
+/**
+ *
+ * @param data
+ * @param start
+ * @param numGlyphs
+ * @param shortVersion
+ */
 function parseLocaTable(data, start, numGlyphs, shortVersion) {
     const p = new parse.Parser(data, start);
     const parseFn = shortVersion ? p.parseUShort : p.parseULong;

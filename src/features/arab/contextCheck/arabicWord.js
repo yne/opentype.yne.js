@@ -4,6 +4,10 @@
 
 import { isArabicChar } from '../../../char.js';
 
+/**
+ *
+ * @param contextParams
+ */
 function arabicWordStartCheck(contextParams) {
     const char = contextParams.current;
     const prevChar = contextParams.get(-1);
@@ -15,6 +19,10 @@ function arabicWordStartCheck(contextParams) {
     );
 }
 
+/**
+ *
+ * @param contextParams
+ */
 function arabicWordEndCheck(contextParams) {
     const nextChar = contextParams.get(1);
     return (

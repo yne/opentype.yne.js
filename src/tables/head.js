@@ -6,6 +6,11 @@ import parse from '../parse.js';
 import table from '../table.js';
 
 // Parse the header `head` table
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseHeadTable(data, start) {
     const head = {};
     const p = new parse.Parser(data, start);
@@ -30,6 +35,10 @@ function parseHeadTable(data, start) {
     return head;
 }
 
+/**
+ *
+ * @param options
+ */
 function makeHeadTable(options) {
     // Apple Mac timestamp epoch is 01/01/1904 not 01/01/1970
     const timestamp = Math.round(new Date().getTime() / 1000) + 2082844800;

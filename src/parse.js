@@ -3,30 +3,55 @@
 import check from './check.js';
 
 // Retrieve an unsigned byte from the DataView.
+/**
+ *
+ * @param dataView
+ * @param offset
+ */
 function getByte(dataView, offset) {
     return dataView.getUint8(offset);
 }
 
 // Retrieve an unsigned 16-bit short from the DataView.
 // The value is stored in big endian.
+/**
+ *
+ * @param dataView
+ * @param offset
+ */
 function getUShort(dataView, offset) {
     return dataView.getUint16(offset, false);
 }
 
 // Retrieve a signed 16-bit short from the DataView.
 // The value is stored in big endian.
+/**
+ *
+ * @param dataView
+ * @param offset
+ */
 function getShort(dataView, offset) {
     return dataView.getInt16(offset, false);
 }
 
 // Retrieve an unsigned 32-bit long from the DataView.
 // The value is stored in big endian.
+/**
+ *
+ * @param dataView
+ * @param offset
+ */
 function getULong(dataView, offset) {
     return dataView.getUint32(offset, false);
 }
 
 // Retrieve a 32-bit signed fixed-point number (16.16) from the DataView.
 // The value is stored in big endian.
+/**
+ *
+ * @param dataView
+ * @param offset
+ */
 function getFixed(dataView, offset) {
     const decimal = dataView.getInt16(offset, false);
     const fraction = dataView.getUint16(offset + 2, false);
@@ -35,6 +60,11 @@ function getFixed(dataView, offset) {
 
 // Retrieve a 4-character tag from the DataView.
 // Tags are used to identify tables.
+/**
+ *
+ * @param dataView
+ * @param offset
+ */
 function getTag(dataView, offset) {
     let tag = '';
     for (let i = offset; i < offset + 4; i += 1) {
@@ -46,6 +76,12 @@ function getTag(dataView, offset) {
 
 // Retrieve an offset from the DataView.
 // Offsets are 1 to 4 bytes in length, depending on the offSize argument.
+/**
+ *
+ * @param dataView
+ * @param offset
+ * @param offSize
+ */
 function getOffset(dataView, offset, offSize) {
     let v = 0;
     for (let i = 0; i < offSize; i += 1) {
@@ -57,6 +93,12 @@ function getOffset(dataView, offset, offSize) {
 }
 
 // Retrieve a number of bytes from start offset to the end offset from the DataView.
+/**
+ *
+ * @param dataView
+ * @param startOffset
+ * @param endOffset
+ */
 function getBytes(dataView, startOffset, endOffset) {
     const bytes = [];
     for (let i = startOffset; i < endOffset; i += 1) {
@@ -67,6 +109,10 @@ function getBytes(dataView, startOffset, endOffset) {
 }
 
 // Convert the list of bytes to a string.
+/**
+ *
+ * @param bytes
+ */
 function bytesToString(bytes) {
     let s = '';
     for (let i = 0; i < bytes.length; i += 1) {
@@ -88,6 +134,11 @@ const typeOffsets = {
 
 // A stateful parser that changes the offset whenever a value is retrieved.
 // The data is a DataView.
+/**
+ *
+ * @param data
+ * @param offset
+ */
 function Parser(data, offset) {
     this.data = data;
     this.offset = offset;
@@ -258,6 +309,9 @@ Parser.prototype.parseByteList = function(count) {
  * Parse a list of items.
  * Record count is optional, if omitted it is read from the stream.
  * itemCallback is one of the Parser methods.
+ *
+ * @param count
+ * @param itemCallback
  */
 Parser.prototype.parseList = function(count, itemCallback) {
     if (!itemCallback) {
@@ -287,6 +341,9 @@ Parser.prototype.parseList32 = function(count, itemCallback) {
  * Parse a list of records.
  * Record count is optional, if omitted it is read from the stream.
  * Example of recordDescription: { sequenceIndex: Parser.uShort, lookupListIndex: Parser.uShort }
+ *
+ * @param count
+ * @param recordDescription
  */
 Parser.prototype.parseRecordList = function(count, recordDescription) {
     // If the count argument is absent, read it in the stream.
@@ -349,6 +406,8 @@ Parser.prototype.parseStruct = function(description) {
  * Parse a GPOS valueRecord
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gpos#value-record
  * valueFormat is optional, if omitted it is read from the stream.
+ *
+ * @param valueFormat
  */
 Parser.prototype.parseValueRecord = function(valueFormat) {
     if (valueFormat === undefined) {
@@ -415,6 +474,8 @@ Parser.prototype.parsePointer32 = function(description) {
  * If itemCallback is not provided, a list of list of UShort is assumed.
  * If provided, itemCallback is called on each item and must parse the item.
  * See examples in tables/gsub.js
+ *
+ * @param itemCallback
  */
 Parser.prototype.parseListOfLists = function(itemCallback) {
     const offsets = this.parseOffset16List();

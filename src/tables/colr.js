@@ -5,6 +5,11 @@ import { Parser } from '../parse.js';
 import check from '../check.js';
 import table from '../table.js';
 
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseColrTable(data, start) {
     const p = new Parser(data, start);
     const version = p.parseUShort();
@@ -32,6 +37,13 @@ function parseColrTable(data, start) {
     };
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.version
+ * @param root0.baseGlyphRecords
+ * @param root0.layerRecords
+ */
 function makeColrTable({ version = 0x0000, baseGlyphRecords = [], layerRecords = [] }) {
     check.argument(version === 0x0000, 'Only COLRv0 supported.');
     const baseGlyphRecordsOffset = 14;

@@ -6,16 +6,22 @@ import Layout from './layout.js';
 
 /**
  * @exports opentype.Substitution
+ * @param font
  * @class
- * @extends opentype.Layout
+ * @augments opentype.Layout
  * @param {opentype.Font}
- * @constructor
+ * @class
  */
 function Substitution(font) {
     Layout.call(this, font, 'gsub');
 }
 
 // Check if 2 arrays of primitives are equal.
+/**
+ *
+ * @param ar1
+ * @param ar2
+ */
 function arraysEqual(ar1, ar2) {
     const n = ar1.length;
     if (n !== ar2.length) { return false; }
@@ -26,6 +32,12 @@ function arraysEqual(ar1, ar2) {
 }
 
 // Find the first subtable of a lookup table in a particular format.
+/**
+ *
+ * @param lookupTable
+ * @param format
+ * @param defaultSubtable
+ */
 function getSubstFormat(lookupTable, format, defaultSubtable) {
     const subtables = lookupTable.subtables;
     for (let i = 0; i < subtables.length; i++) {
@@ -45,7 +57,8 @@ Substitution.prototype = Layout.prototype;
 
 /**
  * Create a default GSUB table.
- * @return {Object} gsub - The GSUB table.
+ *
+ * @returns {object} gsub - The GSUB table.
  */
 Substitution.prototype.createDefaultTable = function() {
     // Generate a default empty GSUB table with just a DFLT script and dflt lang sys.
@@ -65,10 +78,11 @@ Substitution.prototype.createDefaultTable = function() {
 
 /**
  * List all single substitutions (lookup type 1) for a given script, language, and feature.
+ *
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
  * @param {string} feature - 4-character feature name ('aalt', 'salt', 'ss01'...)
- * @return {Array} substitutions - The list of substitutions.
+ * @returns {Array} substitutions - The list of substitutions.
  */
 Substitution.prototype.getSingle = function(feature, script, language) {
     const substitutions = [];
@@ -98,10 +112,11 @@ Substitution.prototype.getSingle = function(feature, script, language) {
 
 /**
  * List all multiple substitutions (lookup type 2) for a given script, language, and feature.
+ *
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
  * @param {string} feature - 4-character feature name ('ccmp', 'stch')
- * @return {Array} substitutions - The list of substitutions.
+ * @returns {Array} substitutions - The list of substitutions.
  */
 Substitution.prototype.getMultiple = function(feature, script, language) {
     const substitutions = [];
@@ -125,10 +140,11 @@ Substitution.prototype.getMultiple = function(feature, script, language) {
 
 /**
  * List all alternates (lookup type 3) for a given script, language, and feature.
+ *
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
  * @param {string} feature - 4-character feature name ('aalt', 'salt'...)
- * @return {Array} alternates - The list of alternates
+ * @returns {Array} alternates - The list of alternates
  */
 Substitution.prototype.getAlternates = function(feature, script, language) {
     const alternates = [];
@@ -150,10 +166,11 @@ Substitution.prototype.getAlternates = function(feature, script, language) {
 /**
  * List all ligatures (lookup type 4) for a given script, language, and feature.
  * The result is an array of ligature objects like { sub: [ids], by: id }
+ *
  * @param {string} feature - 4-letter feature name ('liga', 'rlig', 'dlig'...)
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
- * @return {Array} ligatures - The list of ligatures.
+ * @returns {Array} ligatures - The list of ligatures.
  */
 Substitution.prototype.getLigatures = function(feature, script, language) {
     const ligatures = [];
@@ -183,8 +200,9 @@ Substitution.prototype.getLigatures = function(feature, script, language) {
 /**
  * Add or modify a single substitution (lookup type 1)
  * Format 2, more flexible, is always used.
+ *
  * @param {string} feature - 4-letter feature name ('liga', 'rlig', 'dlig'...)
- * @param {Object} substitution - { sub: id, by: id } (format 1 is not supported)
+ * @param {object} substitution - { sub: id, by: id } (format 1 is not supported)
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
  */
@@ -208,8 +226,9 @@ Substitution.prototype.addSingle = function(feature, substitution, script, langu
 
 /**
  * Add or modify a multiple substitution (lookup type 2)
+ *
  * @param {string} feature - 4-letter feature name ('ccmp', 'stch')
- * @param {Object} substitution - { sub: id, by: [id] } for format 2.
+ * @param {object} substitution - { sub: id, by: [id] } for format 2.
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
  */
@@ -234,8 +253,9 @@ Substitution.prototype.addMultiple = function(feature, substitution, script, lan
 
 /**
  * Add or modify an alternate substitution (lookup type 3)
+ *
  * @param {string} feature - 4-letter feature name ('liga', 'rlig', 'dlig'...)
- * @param {Object} substitution - { sub: id, by: [ids] }
+ * @param {object} substitution - { sub: id, by: [ids] }
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
  */
@@ -260,8 +280,9 @@ Substitution.prototype.addAlternate = function(feature, substitution, script, la
 /**
  * Add a ligature (lookup type 4)
  * Ligatures with more components must be stored ahead of those with fewer components in order to be found
+ *
  * @param {string} feature - 4-letter feature name ('liga', 'rlig', 'dlig'...)
- * @param {Object} ligature - { sub: [ids], by: id }
+ * @param {object} ligature - { sub: [ids], by: id }
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
  */
@@ -305,10 +326,11 @@ Substitution.prototype.addLigature = function(feature, ligature, script, languag
 
 /**
  * List all feature data for a given script and language.
+ *
  * @param {string} feature - 4-letter feature name
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
- * @return {Array} substitutions - The list of substitutions.
+ * @returns {Array} substitutions - The list of substitutions.
  */
 Substitution.prototype.getFeature = function(feature, script, language) {
     if (/ss\d\d/.test(feature)) {
@@ -335,8 +357,9 @@ Substitution.prototype.getFeature = function(feature, script, language) {
 
 /**
  * Add a substitution to a feature for a given script and language.
+ *
  * @param {string} feature - 4-letter feature name
- * @param {Object} sub - the substitution to add (an object like { sub: id or [ids], by: id or [ids] })
+ * @param {object} sub - the substitution to add (an object like { sub: id or [ids], by: id or [ids] })
  * @param {string} [script='DFLT']
  * @param {string} [language='dflt']
  */

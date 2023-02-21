@@ -32,6 +32,7 @@ import post from './tables/post.js';
 import meta from './tables/meta.js';
 /**
  * The opentype library.
+ * 
  * @namespace opentype
  */
 
@@ -39,8 +40,9 @@ import meta from './tables/meta.js';
 /**
  * Loads a font from a file. The callback throws an error message as the first parameter if it fails
  * and the font as an ArrayBuffer in the second parameter if it succeeds.
- * @param  {string} path - The path of the file
- * @param  {Function} callback - The function to call when the font load completes
+ * 
+ * @param {string} path - The path of the file
+ * @param {Function} callback - The function to call when the font load completes
  */
 function loadFromFile(path, callback) {
     require('fs').readFile(path, function(err, buffer) {
@@ -55,8 +57,9 @@ function loadFromFile(path, callback) {
 /**
  * Loads a font from a URL. The callback throws an error message as the first parameter if it fails
  * and the font as an ArrayBuffer in the second parameter if it succeeds.
- * @param  {string} url - The URL of the font file.
- * @param  {Function} callback - The function to call when the font load completes
+ * 
+ * @param {string} url - The URL of the font file.
+ * @param {Function} callback - The function to call when the font load completes
  */
 function loadFromUrl(url, callback) {
     const request = new XMLHttpRequest();
@@ -80,9 +83,10 @@ function loadFromUrl(url, callback) {
 // Table Directory Entries //////////////////////////////////////////////
 /**
  * Parses OpenType table entries.
- * @param  {DataView}
- * @param  {Number}
- * @return {Object[]}
+ * 
+ * @param {DataView} data - table data
+ * @param {number} numTables - number of table entries to parse
+ * @returns {object[]} table entries
  */
 function parseOpenTypeTableEntries(data, numTables) {
     const tableEntries = [];
@@ -101,9 +105,10 @@ function parseOpenTypeTableEntries(data, numTables) {
 
 /**
  * Parses WOFF table entries.
- * @param  {DataView}
- * @param  {Number}
- * @return {Object[]}
+ * 
+ * @param {DataView} data - table data
+ * @param {number} numTables - number of table entries to parse
+ * @returns {object[]} table entries
  */
 function parseWOFFTableEntries(data, numTables) {
     const tableEntries = [];
@@ -130,15 +135,17 @@ function parseWOFFTableEntries(data, numTables) {
 
 /**
  * @typedef TableData
- * @type Object
+ * @type {object}
  * @property {DataView} data - The DataView
  * @property {number} offset - The data offset.
  */
 
 /**
- * @param  {DataView}
- * @param  {Object}
- * @return {TableData}
+ * Uncompress a given WOFF table
+ * 
+ * @param {DataView} data - woff table
+ * @param {object} tableEntry - table object
+ * @returns {TableData} uncompressed table
  */
 function uncompressTable(data, tableEntry) {
     if (tableEntry.compression === 'WOFF') {
@@ -161,9 +168,10 @@ function uncompressTable(data, tableEntry) {
 /**
  * Parse the OpenType file data (as an ArrayBuffer) and return a Font object.
  * Throws an error if the font could not be parsed.
- * @param  {ArrayBuffer}
- * @param  {Object} opt - options for parsing
- * @return {opentype.Font}
+ * 
+ * @param {ArrayBuffer} buffer - buffer
+ * @param {object} opt - options for parsing
+ * @returns {opentype.Font} font object
  */
 function parseBuffer(buffer, opt={}) {
     let indexToLocFormat;
@@ -386,9 +394,12 @@ function parseBuffer(buffer, opt={}) {
  * the `font` is a Font object.
  * We use the node.js callback convention so that
  * opentype.js can integrate with frameworks like async.js.
+ * 
  * @alias opentype.load
- * @param  {string} url - The URL of the font to load.
- * @param  {Function} callback - The callback.
+ * @param {string} url - The URL of the font to load.
+ * @param {Function} callback - The callback.
+ * @param {object} opt - load params
+ * @returns {Promise} the load promise
  */
 function load(url, callback, opt = {}) {
     const isNode = typeof window === 'undefined';
@@ -425,10 +436,11 @@ function load(url, callback, opt = {}) {
 /**
  * Synchronously load the font from a URL or file.
  * When done, returns the font object or throws an error.
+ * 
  * @alias opentype.loadSync
- * @param  {string} url - The URL of the font to load.
- * @param  {Object} opt - opt.lowMemory
- * @return {opentype.Font}
+ * @param {string} url - The URL of the font to load.
+ * @param {object} opt - opt.lowMemory
+ * @returns {opentype.Font} loaded font
  */
 function loadSync(url, opt) {
     return parseBuffer(require('fs').readFileSync(url), opt);

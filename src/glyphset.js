@@ -3,6 +3,12 @@
 import Glyph from './glyph.js';
 
 // Define a property on the glyph that depends on the path being loaded.
+/**
+ *
+ * @param glyph
+ * @param externalName
+ * @param internalName
+ */
 function defineDependentProperty(glyph, externalName, internalName) {
     Object.defineProperty(glyph, externalName, {
         get: function() {
@@ -22,8 +28,11 @@ function defineDependentProperty(glyph, externalName, internalName) {
  * A GlyphSet represents all glyphs available in the font, but modelled using
  * a deferred glyph loader, for retrieving glyphs only once they are absolutely
  * necessary, to keep the memory footprint down.
+ *
  * @exports opentype.GlyphSet
  * @class
+ * @param font
+ * @param glyphs
  * @param {opentype.Font}
  * @param {Array}
  */
@@ -43,7 +52,7 @@ function GlyphSet(font, glyphs) {
 
 /**
  * @param  {number} index
- * @return {opentype.Glyph}
+ * @returns {opentype.Glyph}
  */
 GlyphSet.prototype.get = function(index) {
     // this.glyphs[index] is 'undefined' when low memory mode is on. glyph is pushed on request only.
@@ -84,7 +93,8 @@ GlyphSet.prototype.get = function(index) {
 
 /**
  * @param  {number} index
- * @param  {Object}
+ * @param  {object}
+ * @param loader
  */
 GlyphSet.prototype.push = function(index, loader) {
     this.glyphs[index] = loader;
@@ -95,7 +105,7 @@ GlyphSet.prototype.push = function(index, loader) {
  * @alias opentype.glyphLoader
  * @param  {opentype.Font} font
  * @param  {number} index
- * @return {opentype.Glyph}
+ * @returns {opentype.Glyph}
  */
 function glyphLoader(font, index) {
     return new Glyph({index: index, font: font});
@@ -105,14 +115,15 @@ function glyphLoader(font, index) {
  * Generate a stub glyph that can be filled with all metadata *except*
  * the "points" and "path" properties, which must be loaded only once
  * the glyph's path is actually requested for text shaping.
+ *
  * @alias opentype.ttfGlyphLoader
  * @param  {opentype.Font} font
  * @param  {number} index
  * @param  {Function} parseGlyph
- * @param  {Object} data
+ * @param  {object} data
  * @param  {number} position
  * @param  {Function} buildPath
- * @return {opentype.Glyph}
+ * @returns {opentype.Glyph}
  */
 function ttfGlyphLoader(font, index, parseGlyph, data, position, buildPath) {
     return function() {
@@ -139,7 +150,7 @@ function ttfGlyphLoader(font, index, parseGlyph, data, position, buildPath) {
  * @param  {number} index
  * @param  {Function} parseCFFCharstring
  * @param  {string} charstring
- * @return {opentype.Glyph}
+ * @returns {opentype.Glyph}
  */
 function cffGlyphLoader(font, index, parseCFFCharstring, charstring) {
     return function() {

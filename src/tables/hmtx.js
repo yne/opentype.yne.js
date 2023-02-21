@@ -4,6 +4,14 @@
 import parse from '../parse.js';
 import table from '../table.js';
 
+/**
+ *
+ * @param data
+ * @param start
+ * @param numMetrics
+ * @param numGlyphs
+ * @param glyphs
+ */
 function parseHmtxTableAll(data, start, numMetrics, numGlyphs, glyphs) {
     let advanceWidth;
     let leftSideBearing;
@@ -21,6 +29,14 @@ function parseHmtxTableAll(data, start, numMetrics, numGlyphs, glyphs) {
     }
 }
 
+/**
+ *
+ * @param font
+ * @param data
+ * @param start
+ * @param numMetrics
+ * @param numGlyphs
+ */
 function parseHmtxTableOnLowMemory(font, data, start, numMetrics, numGlyphs) {
     font._hmtxTableData = {};
 
@@ -43,6 +59,16 @@ function parseHmtxTableOnLowMemory(font, data, start, numMetrics, numGlyphs) {
 
 // Parse the `hmtx` table, which contains the horizontal metrics for all glyphs.
 // This function augments the glyph array, adding the advanceWidth and leftSideBearing to each glyph.
+/**
+ *
+ * @param font
+ * @param data
+ * @param start
+ * @param numMetrics
+ * @param numGlyphs
+ * @param glyphs
+ * @param opt
+ */
 function parseHmtxTable(font, data, start, numMetrics, numGlyphs, glyphs, opt) {
     if (opt.lowMemory)
         parseHmtxTableOnLowMemory(font, data, start, numMetrics, numGlyphs);
@@ -50,6 +76,10 @@ function parseHmtxTable(font, data, start, numMetrics, numGlyphs, glyphs, opt) {
         parseHmtxTableAll(data, start, numMetrics, numGlyphs, glyphs);
 }
 
+/**
+ *
+ * @param glyphs
+ */
 function makeHmtxTable(glyphs) {
     const t = new table.Table('hmtx', []);
     for (let i = 0; i < glyphs.length; i += 1) {

@@ -10,6 +10,10 @@ import { isBrowser, checkArgument } from './util.js';
 import HintingTrueType from './hintingtt.js';
 import Bidi from './bidi.js';
 
+/**
+ *
+ * @param options
+ */
 function createDefaultNamesInfo(options) {
     return {
         fontFamily: {en: options.familyName || ' '},
@@ -32,8 +36,8 @@ function createDefaultNamesInfo(options) {
 
 /**
  * @typedef FontOptions
- * @type Object
- * @property {Boolean} empty - whether to create a new empty font
+ * @type {Object}
+ * @property {boolean} empty - whether to create a new empty font
  * @property {string} familyName
  * @property {string} styleName
  * @property {string=} fullName
@@ -48,10 +52,10 @@ function createDefaultNamesInfo(options) {
  * @property {string=} description
  * @property {string=} copyright
  * @property {string=} trademark
- * @property {Number} unitsPerEm
- * @property {Number} ascender
- * @property {Number} descender
- * @property {Number} createdTimestamp
+ * @property {number} unitsPerEm
+ * @property {number} ascender
+ * @property {number} descender
+ * @property {number} createdTimestamp
  * @property {string=} weightClass
  * @property {string=} widthClass
  * @property {string=} fsSelection
@@ -61,10 +65,12 @@ function createDefaultNamesInfo(options) {
  * A Font represents a loaded OpenType font file.
  * It contains a set of glyphs and methods to draw text on a drawing context,
  * or to get a path representing the text.
+ *
  * @exports opentype.Font
+ * @param options
  * @class
  * @param {FontOptions}
- * @constructor
+ * @class
  */
 function Font(options) {
     options = options || {};
@@ -120,8 +126,10 @@ function Font(options) {
 
 /**
  * Check if the font has a glyph for the given character.
+ *
  * @param  {string}
- * @return {Boolean}
+ * @param c
+ * @returns {boolean}
  */
 Font.prototype.hasChar = function(c) {
     return this.encoding.charToGlyphIndex(c) !== null;
@@ -131,8 +139,10 @@ Font.prototype.hasChar = function(c) {
  * Convert the given character to a single glyph index.
  * Note that this function assumes that there is a one-to-one mapping between
  * the given character and a glyph; for complex scripts this might not be the case.
+ *
  * @param  {string}
- * @return {Number}
+ * @param s
+ * @returns {number}
  */
 Font.prototype.charToGlyphIndex = function(s) {
     return this.encoding.charToGlyphIndex(s);
@@ -142,8 +152,10 @@ Font.prototype.charToGlyphIndex = function(s) {
  * Convert the given character to a single Glyph object.
  * Note that this function assumes that there is a one-to-one mapping between
  * the given character and a glyph; for complex scripts this might not be the case.
+ *
  * @param  {string}
- * @return {opentype.Glyph}
+ * @param c
+ * @returns {opentype.Glyph}
  */
 Font.prototype.charToGlyph = function(c) {
     const glyphIndex = this.charToGlyphIndex(c);
@@ -158,6 +170,7 @@ Font.prototype.charToGlyph = function(c) {
 
 /**
  * Update features
+ *
  * @param {any} options features options
  */
 Font.prototype.updateFeatures = function (options) {
@@ -179,9 +192,11 @@ Font.prototype.updateFeatures = function (options) {
  * Note that there is no strict one-to-one mapping between characters and
  * glyphs, so the list of returned glyphs can be larger or smaller than the
  * length of the given string.
+ *
  * @param  {string}
+ * @param s
  * @param  {GlyphRenderOptions} [options]
- * @return {opentype.Glyph[]}
+ * @returns {opentype.Glyph[]}
  */
 Font.prototype.stringToGlyphs = function(s, options) {
 
@@ -213,7 +228,8 @@ Font.prototype.stringToGlyphs = function(s, options) {
 
 /**
  * @param  {string}
- * @return {Number}
+ * @param name
+ * @returns {number}
  */
 Font.prototype.nameToGlyphIndex = function(name) {
     return this.glyphNames.nameToGlyphIndex(name);
@@ -221,7 +237,8 @@ Font.prototype.nameToGlyphIndex = function(name) {
 
 /**
  * @param  {string}
- * @return {opentype.Glyph}
+ * @param name
+ * @returns {opentype.Glyph}
  */
 Font.prototype.nameToGlyph = function(name) {
     const glyphIndex = this.nameToGlyphIndex(name);
@@ -235,8 +252,9 @@ Font.prototype.nameToGlyph = function(name) {
 };
 
 /**
- * @param  {Number}
- * @return {String}
+ * @param  {number}
+ * @param gid
+ * @returns {string}
  */
 Font.prototype.glyphIndexToName = function(gid) {
     if (!this.glyphNames.glyphIndexToName) {
@@ -253,9 +271,10 @@ Font.prototype.glyphIndexToName = function(gid) {
  * between glyphs.
  * For GPOS kerning, this method uses the default script and language, which covers
  * most use cases. To have greater control, use font.position.getKerningValue .
+ *
  * @param  {opentype.Glyph} leftGlyph
  * @param  {opentype.Glyph} rightGlyph
- * @return {Number}
+ * @returns {number}
  */
 Font.prototype.getKerningValue = function(leftGlyph, rightGlyph) {
     leftGlyph = leftGlyph.index || leftGlyph;
@@ -270,7 +289,7 @@ Font.prototype.getKerningValue = function(leftGlyph, rightGlyph) {
 
 /**
  * @typedef GlyphRenderOptions
- * @type Object
+ * @type {Object}
  * @property {string} [script] - script used to determine which features to apply. By default, 'DFLT' or 'latn' is used.
  *                               See https://www.microsoft.com/typography/otspec/scripttags.htm
  * @property {string} [language='dflt'] - language system used to determine which features to apply.
@@ -294,6 +313,7 @@ Font.prototype.defaultRenderOptions = {
 /**
  * Helper function that invokes the given callback for each glyph in the given text.
  * The callback gets `(glyph, x, y, fontSize, options)`.* @param  {string} text
+ *
  * @param {string} text - The text to apply.
  * @param  {number} [x=0] - Horizontal position of the beginning of the text.
  * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
@@ -340,12 +360,13 @@ Font.prototype.forEachGlyph = function(text, x, y, fontSize, options, callback) 
 
 /**
  * Create a Path object that represents the given text.
+ *
  * @param  {string} text - The text to create.
  * @param  {number} [x=0] - Horizontal position of the beginning of the text.
  * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
  * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
  * @param  {GlyphRenderOptions=} options
- * @return {opentype.Path}
+ * @returns {opentype.Path}
  */
 Font.prototype.getPath = function(text, x, y, fontSize, options) {
     const fullPath = new Path();
@@ -358,12 +379,13 @@ Font.prototype.getPath = function(text, x, y, fontSize, options) {
 
 /**
  * Create an array of Path objects that represent the glyphs of a given text.
+ *
  * @param  {string} text - The text to create.
  * @param  {number} [x=0] - Horizontal position of the beginning of the text.
  * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
  * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
  * @param  {GlyphRenderOptions=} options
- * @return {opentype.Path[]}
+ * @returns {opentype.Path[]}
  */
 Font.prototype.getPaths = function(text, x, y, fontSize, options) {
     const glyphPaths = [];
@@ -388,7 +410,7 @@ Font.prototype.getPaths = function(text, x, y, fontSize, options) {
  * @param  {string} text - The text to create.
  * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
  * @param  {GlyphRenderOptions=} options
- * @return advance width
+ * @returns advance width
  */
 Font.prototype.getAdvanceWidth = function(text, fontSize, options) {
     return this.forEachGlyph(text, 0, 0, fontSize, options, function() {});
@@ -396,6 +418,7 @@ Font.prototype.getAdvanceWidth = function(text, fontSize, options) {
 
 /**
  * Draw the text on the given drawing context.
+ *
  * @param  {CanvasRenderingContext2D} ctx - A 2D drawing context, like Canvas.
  * @param  {string} text - The text to create.
  * @param  {number} [x=0] - Horizontal position of the beginning of the text.
@@ -410,6 +433,7 @@ Font.prototype.draw = function(ctx, text, x, y, fontSize, options) {
 /**
  * Draw the points of all glyphs in the text.
  * On-curve points will be drawn in blue, off-curve points will be drawn in red.
+ *
  * @param {CanvasRenderingContext2D} ctx - A 2D drawing context, like Canvas.
  * @param {string} text - The text to create.
  * @param {number} [x=0] - Horizontal position of the beginning of the text.
@@ -428,6 +452,7 @@ Font.prototype.drawPoints = function(ctx, text, x, y, fontSize, options) {
  * Black lines indicate the origin of the coordinate system (point 0,0).
  * Blue lines indicate the glyph bounding box.
  * Green line indicates the advance width of the glyph.
+ *
  * @param {CanvasRenderingContext2D} ctx - A 2D drawing context, like Canvas.
  * @param {string} text - The text to create.
  * @param {number} [x=0] - Horizontal position of the beginning of the text.
@@ -443,7 +468,8 @@ Font.prototype.drawMetrics = function(ctx, text, x, y, fontSize, options) {
 
 /**
  * @param  {string}
- * @return {string}
+ * @param name
+ * @returns {string}
  */
 Font.prototype.getEnglishName = function(name) {
     const translations = (this.names.unicode || this.names.macintosh || this.names.windows)[name];
@@ -459,12 +485,21 @@ Font.prototype.validate = function() {
     const warnings = [];
     const _this = this;
 
+    /**
+     *
+     * @param predicate
+     * @param message
+     */
     function assert(predicate, message) {
         if (!predicate) {
             warnings.push(message);
         }
     }
 
+    /**
+     *
+     * @param name
+     */
     function assertNamePresent(name) {
         const englishName = _this.getEnglishName(name);
         assert(englishName && englishName.trim().length > 0,
@@ -485,7 +520,8 @@ Font.prototype.validate = function() {
 /**
  * Convert the font object to a SFNT data structure.
  * This structure contains all the necessary tables and metadata to create a binary OTF file.
- * @return {opentype.Table}
+ *
+ * @returns {opentype.Table}
  */
 Font.prototype.toTables = function() {
     return sfnt.fontToTable(this);
@@ -499,7 +535,8 @@ Font.prototype.toBuffer = function() {
 };
 /**
  * Converts a `opentype.Font` into an `ArrayBuffer`
- * @return {ArrayBuffer}
+ *
+ * @returns {ArrayBuffer}
  */
 Font.prototype.toArrayBuffer = function() {
     const sfntTable = this.toTables();
@@ -515,6 +552,8 @@ Font.prototype.toArrayBuffer = function() {
 
 /**
  * Initiate a download of the OpenType font.
+ *
+ * @param fileName
  */
 Font.prototype.download = function(fileName) {
     const familyName = this.getEnglishName('fontFamily');

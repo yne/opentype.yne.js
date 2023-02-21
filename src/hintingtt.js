@@ -40,6 +40,10 @@ let execComponent;
 * There ought to be exactly one
 * for each truetype font that is used for hinting.
 */
+/**
+ *
+ * @param font
+ */
 function Hinting(font) {
     // the font this hinting object is for
     this.font = font;
@@ -66,6 +70,10 @@ function Hinting(font) {
 /*
 * Not rounding.
 */
+/**
+ *
+ * @param v
+ */
 function roundOff(v) {
     return v;
 }
@@ -73,6 +81,10 @@ function roundOff(v) {
 /*
 * Rounding to grid.
 */
+/**
+ *
+ * @param v
+ */
 function roundToGrid(v) {
     //Rounding in TT is supposed to "symmetrical around zero"
     return Math.sign(v) * Math.round(Math.abs(v));
@@ -81,6 +93,10 @@ function roundToGrid(v) {
 /*
 * Rounding to double grid.
 */
+/**
+ *
+ * @param v
+ */
 function roundToDoubleGrid(v) {
     return Math.sign(v) * Math.round(Math.abs(v * 2)) / 2;
 }
@@ -88,6 +104,10 @@ function roundToDoubleGrid(v) {
 /*
 * Rounding to half grid.
 */
+/**
+ *
+ * @param v
+ */
 function roundToHalfGrid(v) {
     return Math.sign(v) * (Math.round(Math.abs(v) + 0.5) - 0.5);
 }
@@ -95,6 +115,10 @@ function roundToHalfGrid(v) {
 /*
 * Rounding to up to grid.
 */
+/**
+ *
+ * @param v
+ */
 function roundUpToGrid(v) {
     return Math.sign(v) * Math.ceil(Math.abs(v));
 }
@@ -102,6 +126,10 @@ function roundUpToGrid(v) {
 /*
 * Rounding to down to grid.
 */
+/**
+ *
+ * @param v
+ */
 function roundDownToGrid(v) {
     return Math.sign(v) * Math.floor(Math.abs(v));
 }
@@ -358,6 +386,11 @@ Object.freeze(yUnitVector);
 /*
 * Creates a unit vector that is not x- or y-axis.
 */
+/**
+ *
+ * @param x
+ * @param y
+ */
 function UnitVector(x, y) {
     this.x = x;
     this.y = y;
@@ -451,6 +484,11 @@ UnitVector.prototype.touch = function(p) {
 /*
 * Returns a unit vector with x/y coordinates.
 */
+/**
+ *
+ * @param x
+ * @param y
+ */
 function getUnitVector(x, y) {
     const d = Math.sqrt(x * x + y * y);
 
@@ -465,6 +503,13 @@ function getUnitVector(x, y) {
 /*
 * Creates a point in the hinting engine.
 */
+/**
+ *
+ * @param x
+ * @param y
+ * @param lastPointOfContour
+ * @param onCurve
+ */
 function HPoint(
     x,
     y,
@@ -538,6 +583,11 @@ const defaultState = {
 * env  ... 'fpgm' or 'prep' or 'glyf'
 * prog ... the program
 */
+/**
+ *
+ * @param env
+ * @param prog
+ */
 function State(env, prog) {
     this.env = env;
     this.stack = [];
@@ -892,6 +942,10 @@ exec = function(state) {
 * This is only done if a SZPx instruction
 * refers to the twilight zone.
 */
+/**
+ *
+ * @param state
+ */
 function initTZone(state)
 {
     const tZone = state.tZone = new Array(state.gZone.length);
@@ -907,6 +961,11 @@ function initTZone(state)
 * Skips the instruction pointer ahead over an IF/ELSE block.
 * handleElse .. if true breaks on matching ELSE
 */
+/**
+ *
+ * @param state
+ * @param handleElse
+ */
 function skip(state, handleElse)
 {
     const prog = state.prog;
@@ -941,6 +1000,11 @@ function skip(state, handleElse)
 
 // SVTCA[a] Set freedom and projection Vectors To Coordinate Axis
 // 0x00-0x01
+/**
+ *
+ * @param v
+ * @param state
+ */
 function SVTCA(v, state) {
     if (exports.DEBUG) console.log(state.step, 'SVTCA[' + v.axis + ']');
 
@@ -949,6 +1013,11 @@ function SVTCA(v, state) {
 
 // SPVTCA[a] Set Projection Vector to Coordinate Axis
 // 0x02-0x03
+/**
+ *
+ * @param v
+ * @param state
+ */
 function SPVTCA(v, state) {
     if (exports.DEBUG) console.log(state.step, 'SPVTCA[' + v.axis + ']');
 
@@ -957,6 +1026,11 @@ function SPVTCA(v, state) {
 
 // SFVTCA[a] Set Freedom Vector to Coordinate Axis
 // 0x04-0x05
+/**
+ *
+ * @param v
+ * @param state
+ */
 function SFVTCA(v, state) {
     if (exports.DEBUG) console.log(state.step, 'SFVTCA[' + v.axis + ']');
 
@@ -965,6 +1039,11 @@ function SFVTCA(v, state) {
 
 // SPVTL[a] Set Projection Vector To Line
 // 0x06-0x07
+/**
+ *
+ * @param a
+ * @param state
+ */
 function SPVTL(a, state) {
     const stack = state.stack;
     const p2i = stack.pop();
@@ -990,6 +1069,11 @@ function SPVTL(a, state) {
 
 // SFVTL[a] Set Freedom Vector To Line
 // 0x08-0x09
+/**
+ *
+ * @param a
+ * @param state
+ */
 function SFVTL(a, state) {
     const stack = state.stack;
     const p2i = stack.pop();
@@ -1015,6 +1099,10 @@ function SFVTL(a, state) {
 
 // SPVFS[] Set Projection Vector From Stack
 // 0x0A
+/**
+ *
+ * @param state
+ */
 function SPVFS(state) {
     const stack = state.stack;
     const y = stack.pop();
@@ -1027,6 +1115,10 @@ function SPVFS(state) {
 
 // SFVFS[] Set Freedom Vector From Stack
 // 0x0B
+/**
+ *
+ * @param state
+ */
 function SFVFS(state) {
     const stack = state.stack;
     const y = stack.pop();
@@ -1039,6 +1131,10 @@ function SFVFS(state) {
 
 // GPV[] Get Projection Vector
 // 0x0C
+/**
+ *
+ * @param state
+ */
 function GPV(state) {
     const stack = state.stack;
     const pv = state.pv;
@@ -1051,6 +1147,10 @@ function GPV(state) {
 
 // GFV[] Get Freedom Vector
 // 0x0C
+/**
+ *
+ * @param state
+ */
 function GFV(state) {
     const stack = state.stack;
     const fv = state.fv;
@@ -1063,6 +1163,10 @@ function GFV(state) {
 
 // SFVTPV[] Set Freedom Vector To Projection Vector
 // 0x0E
+/**
+ *
+ * @param state
+ */
 function SFVTPV(state) {
     state.fv = state.pv;
 
@@ -1071,6 +1175,10 @@ function SFVTPV(state) {
 
 // ISECT[] moves point p to the InterSECTion of two lines
 // 0x0F
+/**
+ *
+ * @param state
+ */
 function ISECT(state)
 {
     const stack = state.stack;
@@ -1111,6 +1219,10 @@ function ISECT(state)
 
 // SRP0[] Set Reference Point 0
 // 0x10
+/**
+ *
+ * @param state
+ */
 function SRP0(state) {
     state.rp0 = state.stack.pop();
 
@@ -1119,6 +1231,10 @@ function SRP0(state) {
 
 // SRP1[] Set Reference Point 1
 // 0x11
+/**
+ *
+ * @param state
+ */
 function SRP1(state) {
     state.rp1 = state.stack.pop();
 
@@ -1127,6 +1243,10 @@ function SRP1(state) {
 
 // SRP1[] Set Reference Point 2
 // 0x12
+/**
+ *
+ * @param state
+ */
 function SRP2(state) {
     state.rp2 = state.stack.pop();
 
@@ -1135,6 +1255,10 @@ function SRP2(state) {
 
 // SZP0[] Set Zone Pointer 0
 // 0x13
+/**
+ *
+ * @param state
+ */
 function SZP0(state) {
     const n = state.stack.pop();
 
@@ -1157,6 +1281,10 @@ function SZP0(state) {
 
 // SZP1[] Set Zone Pointer 1
 // 0x14
+/**
+ *
+ * @param state
+ */
 function SZP1(state) {
     const n = state.stack.pop();
 
@@ -1179,6 +1307,10 @@ function SZP1(state) {
 
 // SZP2[] Set Zone Pointer 2
 // 0x15
+/**
+ *
+ * @param state
+ */
 function SZP2(state) {
     const n = state.stack.pop();
 
@@ -1201,6 +1333,10 @@ function SZP2(state) {
 
 // SZPS[] Set Zone PointerS
 // 0x16
+/**
+ *
+ * @param state
+ */
 function SZPS(state) {
     const n = state.stack.pop();
 
@@ -1223,6 +1359,10 @@ function SZPS(state) {
 
 // SLOOP[] Set LOOP variable
 // 0x17
+/**
+ *
+ * @param state
+ */
 function SLOOP(state) {
     state.loop = state.stack.pop();
 
@@ -1231,6 +1371,10 @@ function SLOOP(state) {
 
 // RTG[] Round To Grid
 // 0x18
+/**
+ *
+ * @param state
+ */
 function RTG(state) {
     if (exports.DEBUG) console.log(state.step, 'RTG[]');
 
@@ -1239,6 +1383,10 @@ function RTG(state) {
 
 // RTHG[] Round To Half Grid
 // 0x19
+/**
+ *
+ * @param state
+ */
 function RTHG(state) {
     if (exports.DEBUG) console.log(state.step, 'RTHG[]');
 
@@ -1247,6 +1395,10 @@ function RTHG(state) {
 
 // SMD[] Set Minimum Distance
 // 0x1A
+/**
+ *
+ * @param state
+ */
 function SMD(state) {
     const d = state.stack.pop();
 
@@ -1257,6 +1409,10 @@ function SMD(state) {
 
 // ELSE[] ELSE clause
 // 0x1B
+/**
+ *
+ * @param state
+ */
 function ELSE(state) {
     // This instruction has been reached by executing a then branch
     // so it just skips ahead until matching EIF.
@@ -1271,6 +1427,10 @@ function ELSE(state) {
 
 // JMPR[] JuMP Relative
 // 0x1C
+/**
+ *
+ * @param state
+ */
 function JMPR(state) {
     const o = state.stack.pop();
 
@@ -1282,6 +1442,10 @@ function JMPR(state) {
 
 // SCVTCI[] Set Control Value Table Cut-In
 // 0x1D
+/**
+ *
+ * @param state
+ */
 function SCVTCI(state) {
     const n = state.stack.pop();
 
@@ -1292,6 +1456,10 @@ function SCVTCI(state) {
 
 // DUP[] DUPlicate top stack element
 // 0x20
+/**
+ *
+ * @param state
+ */
 function DUP(state) {
     const stack = state.stack;
 
@@ -1302,6 +1470,10 @@ function DUP(state) {
 
 // POP[] POP top stack element
 // 0x21
+/**
+ *
+ * @param state
+ */
 function POP(state) {
     if (exports.DEBUG) console.log(state.step, 'POP[]');
 
@@ -1310,6 +1482,10 @@ function POP(state) {
 
 // CLEAR[] CLEAR the stack
 // 0x22
+/**
+ *
+ * @param state
+ */
 function CLEAR(state) {
     if (exports.DEBUG) console.log(state.step, 'CLEAR[]');
 
@@ -1318,6 +1494,10 @@ function CLEAR(state) {
 
 // SWAP[] SWAP the top two elements on the stack
 // 0x23
+/**
+ *
+ * @param state
+ */
 function SWAP(state) {
     const stack = state.stack;
 
@@ -1332,6 +1512,10 @@ function SWAP(state) {
 
 // DEPTH[] DEPTH of the stack
 // 0x24
+/**
+ *
+ * @param state
+ */
 function DEPTH(state) {
     const stack = state.stack;
 
@@ -1342,6 +1526,10 @@ function DEPTH(state) {
 
 // LOOPCALL[] LOOPCALL function
 // 0x2A
+/**
+ *
+ * @param state
+ */
 function LOOPCALL(state) {
     const stack = state.stack;
     const fn = stack.pop();
@@ -1373,6 +1561,10 @@ function LOOPCALL(state) {
 
 // CALL[] CALL function
 // 0x2B
+/**
+ *
+ * @param state
+ */
 function CALL(state) {
     const fn = state.stack.pop();
 
@@ -1396,6 +1588,10 @@ function CALL(state) {
 
 // CINDEX[] Copy the INDEXed element to the top of the stack
 // 0x25
+/**
+ *
+ * @param state
+ */
 function CINDEX(state) {
     const stack = state.stack;
     const k = stack.pop();
@@ -1409,6 +1605,10 @@ function CINDEX(state) {
 
 // MINDEX[] Move the INDEXed element to the top of the stack
 // 0x26
+/**
+ *
+ * @param state
+ */
 function MINDEX(state) {
     const stack = state.stack;
     const k = stack.pop();
@@ -1420,6 +1620,10 @@ function MINDEX(state) {
 
 // FDEF[] Function DEFinition
 // 0x2C
+/**
+ *
+ * @param state
+ */
 function FDEF(state) {
     if (state.env !== 'fpgm') throw new Error('FDEF not allowed here');
     const stack = state.stack;
@@ -1439,6 +1643,11 @@ function FDEF(state) {
 
 // MDAP[a] Move Direct Absolute Point
 // 0x2E-0x2F
+/**
+ *
+ * @param round
+ * @param state
+ */
 function MDAP(round, state) {
     const pi = state.stack.pop();
     const p = state.z0[pi];
@@ -1459,6 +1668,11 @@ function MDAP(round, state) {
 
 // IUP[a] Interpolate Untouched Points through the outline
 // 0x30
+/**
+ *
+ * @param v
+ * @param state
+ */
 function IUP(v, state) {
     const z2 = state.z2;
     const pLen = z2.length - 2;
@@ -1494,6 +1708,11 @@ function IUP(v, state) {
 
 // SHP[] SHift Point using reference point
 // 0x32-0x33
+/**
+ *
+ * @param a
+ * @param state
+ */
 function SHP(a, state) {
     const stack = state.stack;
     const rpi = a ? state.rp1 : state.rp2;
@@ -1529,6 +1748,11 @@ function SHP(a, state) {
 
 // SHC[] SHift Contour using reference point
 // 0x36-0x37
+/**
+ *
+ * @param a
+ * @param state
+ */
 function SHC(a, state) {
     const stack = state.stack;
     const rpi = a ? state.rp1 : state.rp2;
@@ -1551,6 +1775,11 @@ function SHC(a, state) {
 
 // SHZ[] SHift Zone using reference point
 // 0x36-0x37
+/**
+ *
+ * @param a
+ * @param state
+ */
 function SHZ(a, state) {
     const stack = state.stack;
     const rpi = a ? state.rp1 : state.rp2;
@@ -1582,6 +1811,10 @@ function SHZ(a, state) {
 
 // SHPIX[] SHift point by a PIXel amount
 // 0x38
+/**
+ *
+ * @param state
+ */
 function SHPIX(state) {
     const stack = state.stack;
     let loop = state.loop;
@@ -1610,6 +1843,10 @@ function SHPIX(state) {
 
 // IP[] Interpolate Point
 // 0x39
+/**
+ *
+ * @param state
+ */
 function IP(state) {
     const stack = state.stack;
     const rp1i = state.rp1;
@@ -1643,6 +1880,11 @@ function IP(state) {
 
 // MSIRP[a] Move Stack Indirect Relative Point
 // 0x3A-0x3B
+/**
+ *
+ * @param a
+ * @param state
+ */
 function MSIRP(a, state) {
     const stack = state.stack;
     const d = stack.pop() / 64;
@@ -1664,6 +1906,10 @@ function MSIRP(a, state) {
 
 // ALIGNRP[] Align to reference point.
 // 0x3C
+/**
+ *
+ * @param state
+ */
 function ALIGNRP(state) {
     const stack = state.stack;
     const rp0i = state.rp0;
@@ -1694,6 +1940,10 @@ function ALIGNRP(state) {
 
 // RTG[] Round To Double Grid
 // 0x3D
+/**
+ *
+ * @param state
+ */
 function RTDG(state) {
     if (exports.DEBUG) console.log(state.step, 'RTDG[]');
 
@@ -1702,6 +1952,11 @@ function RTDG(state) {
 
 // MIAP[a] Move Indirect Absolute Point
 // 0x3E-0x3F
+/**
+ *
+ * @param round
+ * @param state
+ */
 function MIAP(round, state) {
     const stack = state.stack;
     const n = stack.pop();
@@ -1741,6 +1996,10 @@ function MIAP(round, state) {
 
 // NPUSB[] PUSH N Bytes
 // 0x40
+/**
+ *
+ * @param state
+ */
 function NPUSHB(state) {
     const prog = state.prog;
     let ip = state.ip;
@@ -1757,6 +2016,10 @@ function NPUSHB(state) {
 
 // NPUSHW[] PUSH N Words
 // 0x41
+/**
+ *
+ * @param state
+ */
 function NPUSHW(state) {
     let ip = state.ip;
     const prog = state.prog;
@@ -1776,6 +2039,10 @@ function NPUSHW(state) {
 
 // WS[] Write Store
 // 0x42
+/**
+ *
+ * @param state
+ */
 function WS(state) {
     const stack = state.stack;
     let store = state.store;
@@ -1792,6 +2059,10 @@ function WS(state) {
 
 // RS[] Read Store
 // 0x43
+/**
+ *
+ * @param state
+ */
 function RS(state) {
     const stack = state.stack;
     const store = state.store;
@@ -1807,6 +2078,10 @@ function RS(state) {
 
 // WCVTP[] Write Control Value Table in Pixel units
 // 0x44
+/**
+ *
+ * @param state
+ */
 function WCVTP(state) {
     const stack = state.stack;
 
@@ -1820,6 +2095,10 @@ function WCVTP(state) {
 
 // RCVT[] Read Control Value Table entry
 // 0x45
+/**
+ *
+ * @param state
+ */
 function RCVT(state) {
     const stack = state.stack;
     const cvte = stack.pop();
@@ -1831,6 +2110,11 @@ function RCVT(state) {
 
 // GC[] Get Coordinate projected onto the projection vector
 // 0x46-0x47
+/**
+ *
+ * @param a
+ * @param state
+ */
 function GC(a, state) {
     const stack = state.stack;
     const pi = stack.pop();
@@ -1843,6 +2127,11 @@ function GC(a, state) {
 
 // MD[a] Measure Distance
 // 0x49-0x4A
+/**
+ *
+ * @param a
+ * @param state
+ */
 function MD(a, state) {
     const stack = state.stack;
     const pi2 = stack.pop();
@@ -1858,6 +2147,10 @@ function MD(a, state) {
 
 // MPPEM[] Measure Pixels Per EM
 // 0x4B
+/**
+ *
+ * @param state
+ */
 function MPPEM(state) {
     if (exports.DEBUG) console.log(state.step, 'MPPEM[]');
     state.stack.push(state.ppem);
@@ -1865,6 +2158,10 @@ function MPPEM(state) {
 
 // FLIPON[] set the auto FLIP Boolean to ON
 // 0x4D
+/**
+ *
+ * @param state
+ */
 function FLIPON(state) {
     if (exports.DEBUG) console.log(state.step, 'FLIPON[]');
     state.autoFlip = true;
@@ -1872,6 +2169,10 @@ function FLIPON(state) {
 
 // LT[] Less Than
 // 0x50
+/**
+ *
+ * @param state
+ */
 function LT(state) {
     const stack = state.stack;
     const e2 = stack.pop();
@@ -1884,6 +2185,10 @@ function LT(state) {
 
 // LTEQ[] Less Than or EQual
 // 0x53
+/**
+ *
+ * @param state
+ */
 function LTEQ(state) {
     const stack = state.stack;
     const e2 = stack.pop();
@@ -1896,6 +2201,10 @@ function LTEQ(state) {
 
 // GTEQ[] Greater Than
 // 0x52
+/**
+ *
+ * @param state
+ */
 function GT(state) {
     const stack = state.stack;
     const e2 = stack.pop();
@@ -1908,6 +2217,10 @@ function GT(state) {
 
 // GTEQ[] Greater Than or EQual
 // 0x53
+/**
+ *
+ * @param state
+ */
 function GTEQ(state) {
     const stack = state.stack;
     const e2 = stack.pop();
@@ -1920,6 +2233,10 @@ function GTEQ(state) {
 
 // EQ[] EQual
 // 0x54
+/**
+ *
+ * @param state
+ */
 function EQ(state) {
     const stack = state.stack;
     const e2 = stack.pop();
@@ -1932,6 +2249,10 @@ function EQ(state) {
 
 // NEQ[] Not EQual
 // 0x55
+/**
+ *
+ * @param state
+ */
 function NEQ(state) {
     const stack = state.stack;
     const e2 = stack.pop();
@@ -1944,6 +2265,10 @@ function NEQ(state) {
 
 // ODD[] ODD
 // 0x56
+/**
+ *
+ * @param state
+ */
 function ODD(state) {
     const stack = state.stack;
     const n = stack.pop();
@@ -1955,6 +2280,10 @@ function ODD(state) {
 
 // EVEN[] EVEN
 // 0x57
+/**
+ *
+ * @param state
+ */
 function EVEN(state) {
     const stack = state.stack;
     const n = stack.pop();
@@ -1966,6 +2295,10 @@ function EVEN(state) {
 
 // IF[] IF test
 // 0x58
+/**
+ *
+ * @param state
+ */
 function IF(state) {
     let test = state.stack.pop();
     let ins;
@@ -1983,6 +2316,10 @@ function IF(state) {
 
 // EIF[] End IF
 // 0x59
+/**
+ *
+ * @param state
+ */
 function EIF(state) {
     // this can be reached normally when
     // executing an else branch.
@@ -1993,6 +2330,10 @@ function EIF(state) {
 
 // AND[] logical AND
 // 0x5A
+/**
+ *
+ * @param state
+ */
 function AND(state) {
     const stack = state.stack;
     const e2 = stack.pop();
@@ -2005,6 +2346,10 @@ function AND(state) {
 
 // OR[] logical OR
 // 0x5B
+/**
+ *
+ * @param state
+ */
 function OR(state) {
     const stack = state.stack;
     const e2 = stack.pop();
@@ -2017,6 +2362,10 @@ function OR(state) {
 
 // NOT[] logical NOT
 // 0x5C
+/**
+ *
+ * @param state
+ */
 function NOT(state) {
     const stack = state.stack;
     const e = stack.pop();
@@ -2030,6 +2379,11 @@ function NOT(state) {
 // DELTAP2[] DELTA exception P2
 // DELTAP3[] DELTA exception P3
 // 0x5D, 0x71, 0x72
+/**
+ *
+ * @param b
+ * @param state
+ */
 function DELTAP123(b, state) {
     const stack = state.stack;
     const n = stack.pop();
@@ -2059,6 +2413,10 @@ function DELTAP123(b, state) {
 
 // SDB[] Set Delta Base in the graphics state
 // 0x5E
+/**
+ *
+ * @param state
+ */
 function SDB(state) {
     const stack = state.stack;
     const n = stack.pop();
@@ -2070,6 +2428,10 @@ function SDB(state) {
 
 // SDS[] Set Delta Shift in the graphics state
 // 0x5F
+/**
+ *
+ * @param state
+ */
 function SDS(state) {
     const stack = state.stack;
     const n = stack.pop();
@@ -2081,6 +2443,10 @@ function SDS(state) {
 
 // ADD[] ADD
 // 0x60
+/**
+ *
+ * @param state
+ */
 function ADD(state) {
     const stack = state.stack;
     const n2 = stack.pop();
@@ -2093,6 +2459,10 @@ function ADD(state) {
 
 // SUB[] SUB
 // 0x61
+/**
+ *
+ * @param state
+ */
 function SUB(state) {
     const stack = state.stack;
     const n2 = stack.pop();
@@ -2105,6 +2475,10 @@ function SUB(state) {
 
 // DIV[] DIV
 // 0x62
+/**
+ *
+ * @param state
+ */
 function DIV(state) {
     const stack = state.stack;
     const n2 = stack.pop();
@@ -2117,6 +2491,10 @@ function DIV(state) {
 
 // MUL[] MUL
 // 0x63
+/**
+ *
+ * @param state
+ */
 function MUL(state) {
     const stack = state.stack;
     const n2 = stack.pop();
@@ -2129,6 +2507,10 @@ function MUL(state) {
 
 // ABS[] ABSolute value
 // 0x64
+/**
+ *
+ * @param state
+ */
 function ABS(state) {
     const stack = state.stack;
     const n = stack.pop();
@@ -2140,6 +2522,10 @@ function ABS(state) {
 
 // NEG[] NEGate
 // 0x65
+/**
+ *
+ * @param state
+ */
 function NEG(state) {
     const stack = state.stack;
     let n = stack.pop();
@@ -2151,6 +2537,10 @@ function NEG(state) {
 
 // FLOOR[] FLOOR
 // 0x66
+/**
+ *
+ * @param state
+ */
 function FLOOR(state) {
     const stack = state.stack;
     const n = stack.pop();
@@ -2162,6 +2552,10 @@ function FLOOR(state) {
 
 // CEILING[] CEILING
 // 0x67
+/**
+ *
+ * @param state
+ */
 function CEILING(state) {
     const stack = state.stack;
     const n = stack.pop();
@@ -2173,6 +2567,11 @@ function CEILING(state) {
 
 // ROUND[ab] ROUND value
 // 0x68-0x6B
+/**
+ *
+ * @param dt
+ * @param state
+ */
 function ROUND(dt, state) {
     const stack = state.stack;
     const n = stack.pop();
@@ -2184,6 +2583,10 @@ function ROUND(dt, state) {
 
 // WCVTF[] Write Control Value Table in Funits
 // 0x70
+/**
+ *
+ * @param state
+ */
 function WCVTF(state) {
     const stack = state.stack;
     const v = stack.pop();
@@ -2198,6 +2601,11 @@ function WCVTF(state) {
 // DELTAC2[] DELTA exception C2
 // DELTAC3[] DELTA exception C3
 // 0x73, 0x74, 0x75
+/**
+ *
+ * @param b
+ * @param state
+ */
 function DELTAC123(b, state) {
     const stack = state.stack;
     const n = stack.pop();
@@ -2226,6 +2634,10 @@ function DELTAC123(b, state) {
 
 // SROUND[] Super ROUND
 // 0x76
+/**
+ *
+ * @param state
+ */
 function SROUND(state) {
     let n = state.stack.pop();
 
@@ -2275,6 +2687,10 @@ function SROUND(state) {
 
 // S45ROUND[] Super ROUND 45 degrees
 // 0x77
+/**
+ *
+ * @param state
+ */
 function S45ROUND(state) {
     let n = state.stack.pop();
 
@@ -2325,6 +2741,10 @@ function S45ROUND(state) {
 
 // ROFF[] Round Off
 // 0x7A
+/**
+ *
+ * @param state
+ */
 function ROFF(state) {
     if (exports.DEBUG) console.log(state.step, 'ROFF[]');
 
@@ -2333,6 +2753,10 @@ function ROFF(state) {
 
 // RUTG[] Round Up To Grid
 // 0x7C
+/**
+ *
+ * @param state
+ */
 function RUTG(state) {
     if (exports.DEBUG) console.log(state.step, 'RUTG[]');
 
@@ -2341,6 +2765,10 @@ function RUTG(state) {
 
 // RDTG[] Round Down To Grid
 // 0x7D
+/**
+ *
+ * @param state
+ */
 function RDTG(state) {
     if (exports.DEBUG) console.log(state.step, 'RDTG[]');
 
@@ -2349,6 +2777,10 @@ function RDTG(state) {
 
 // SCANCTRL[] SCAN conversion ConTRoL
 // 0x85
+/**
+ *
+ * @param state
+ */
 function SCANCTRL(state) {
     const n = state.stack.pop();
 
@@ -2359,6 +2791,11 @@ function SCANCTRL(state) {
 
 // SDPVTL[a] Set Dual Projection Vector To Line
 // 0x86-0x87
+/**
+ *
+ * @param a
+ * @param state
+ */
 function SDPVTL(a, state) {
     const stack = state.stack;
     const p2i = stack.pop();
@@ -2384,6 +2821,10 @@ function SDPVTL(a, state) {
 
 // GETINFO[] GET INFOrmation
 // 0x88
+/**
+ *
+ * @param state
+ */
 function GETINFO(state) {
     const stack = state.stack;
     const sel = stack.pop();
@@ -2405,6 +2846,10 @@ function GETINFO(state) {
 
 // ROLL[] ROLL the top three stack elements
 // 0x8A
+/**
+ *
+ * @param state
+ */
 function ROLL(state) {
     const stack = state.stack;
     const a = stack.pop();
@@ -2420,6 +2865,10 @@ function ROLL(state) {
 
 // MAX[] MAXimum of top two stack elements
 // 0x8B
+/**
+ *
+ * @param state
+ */
 function MAX(state) {
     const stack = state.stack;
     const e2 = stack.pop();
@@ -2432,6 +2881,10 @@ function MAX(state) {
 
 // MIN[] MINimum of top two stack elements
 // 0x8C
+/**
+ *
+ * @param state
+ */
 function MIN(state) {
     const stack = state.stack;
     const e2 = stack.pop();
@@ -2444,6 +2897,10 @@ function MIN(state) {
 
 // SCANTYPE[] SCANTYPE
 // 0x8D
+/**
+ *
+ * @param state
+ */
 function SCANTYPE(state) {
     const n = state.stack.pop();
     // ignored by opentype.js
@@ -2452,6 +2909,10 @@ function SCANTYPE(state) {
 
 // INSTCTRL[] INSTCTRL
 // 0x8D
+/**
+ *
+ * @param state
+ */
 function INSTCTRL(state) {
     const s = state.stack.pop();
     let v = state.stack.pop();
@@ -2467,6 +2928,11 @@ function INSTCTRL(state) {
 
 // PUSHB[abc] PUSH Bytes
 // 0xB0-0xB7
+/**
+ *
+ * @param n
+ * @param state
+ */
 function PUSHB(n, state) {
     const stack = state.stack;
     const prog = state.prog;
@@ -2481,6 +2947,11 @@ function PUSHB(n, state) {
 
 // PUSHW[abc] PUSH Words
 // 0xB8-0xBF
+/**
+ *
+ * @param n
+ * @param state
+ */
 function PUSHW(n, state) {
     let ip = state.ip;
     const prog = state.prog;
@@ -2507,6 +2978,15 @@ function PUSHW(n, state) {
 // 0xE0-0xFF
 // (if indirect is 1)
 
+/**
+ *
+ * @param indirect
+ * @param setRp0
+ * @param keepD
+ * @param ro
+ * @param dt
+ * @param state
+ */
 function MDRP_MIRP(indirect, setRp0, keepD, ro, dt, state) {
     const stack = state.stack;
     const cvte = indirect && stack.pop();

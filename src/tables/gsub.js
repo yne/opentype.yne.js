@@ -187,6 +187,11 @@ subtableParsers[8] = function parseLookup8() {
 };
 
 // https://www.microsoft.com/typography/OTSPEC/gsub.htm
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseGsubTable(data, start) {
     start = start || 0;
     const p = new Parser(data, start);
@@ -321,6 +326,10 @@ subtableMakers[6] = function makeLookup6(subtable) {
     check.assert(false, 'lookup type 6 format must be 1, 2 or 3.');
 };
 
+/**
+ *
+ * @param gsub
+ */
 function makeGsubTable(gsub) {
     return new table.Table('GSUB', [
         {name: 'version', type: 'ULONG', value: 0x10000},

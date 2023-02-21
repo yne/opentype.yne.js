@@ -4,6 +4,10 @@
 
 import { isLatinChar } from '../../../char.js';
 
+/**
+ *
+ * @param contextParams
+ */
 function latinWordStartCheck(contextParams) {
     const char = contextParams.current;
     const prevChar = contextParams.get(-1);
@@ -15,6 +19,10 @@ function latinWordStartCheck(contextParams) {
     );
 }
 
+/**
+ *
+ * @param contextParams
+ */
 function latinWordEndCheck(contextParams) {
     const nextChar = contextParams.get(1);
     return (

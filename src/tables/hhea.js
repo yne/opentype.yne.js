@@ -5,6 +5,11 @@ import parse from '../parse.js';
 import table from '../table.js';
 
 // Parse the horizontal header `hhea` table
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseHheaTable(data, start) {
     const hhea = {};
     const p = new parse.Parser(data, start);
@@ -25,6 +30,10 @@ function parseHheaTable(data, start) {
     return hhea;
 }
 
+/**
+ *
+ * @param options
+ */
 function makeHheaTable(options) {
     return new table.Table('hhea', [
         {name: 'version', type: 'FIXED', value: 0x00010000},

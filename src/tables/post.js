@@ -6,6 +6,11 @@ import parse from '../parse.js';
 import table from '../table.js';
 
 // Parse the PostScript `post` table
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parsePostTable(data, start) {
     const post = {};
     const p = new parse.Parser(data, start);
@@ -50,6 +55,10 @@ function parsePostTable(data, start) {
     return post;
 }
 
+/**
+ *
+ * @param postTable
+ */
 function makePostTable(postTable) {
     const {
         italicAngle = 0,

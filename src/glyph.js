@@ -5,6 +5,11 @@ import draw from './draw.js';
 import Path from './path.js';
 // import glyf from './tables/glyf' Can't be imported here, because it's a circular dependency
 
+/**
+ *
+ * @param glyph
+ * @param path
+ */
 function getPathDefinition(glyph, path) {
     let _path = path || new Path();
     return {
@@ -26,7 +31,7 @@ function getPathDefinition(glyph, path) {
 
 /**
  * @typedef GlyphOptions
- * @type Object
+ * @type {Object}
  * @property {string} [name] - The glyph name
  * @property {number} [unicode]
  * @property {Array} [unicodes]
@@ -45,9 +50,10 @@ function getPathDefinition(glyph, path) {
 // The `Glyph` class contains utility methods for drawing the path and its points.
 /**
  * @exports opentype.Glyph
+ * @param options
  * @class
  * @param {GlyphOptions}
- * @constructor
+ * @class
  */
 function Glyph(options) {
     // By putting all the code on a prototype function (which is only declared once)
@@ -57,6 +63,7 @@ function Glyph(options) {
 
 /**
  * @param  {GlyphOptions}
+ * @param options
  */
 Glyph.prototype.bindConstructorValues = function(options) {
     this.index = options.index || 0;
@@ -110,6 +117,7 @@ Glyph.prototype.bindConstructorValues = function(options) {
 
 /**
  * @param {number}
+ * @param unicode
  */
 Glyph.prototype.addUnicode = function(unicode) {
     if (this.unicodes.length === 0) {
@@ -121,7 +129,8 @@ Glyph.prototype.addUnicode = function(unicode) {
 
 /**
  * Calculate the minimum bounding box for this glyph.
- * @return {opentype.BoundingBox}
+ *
+ * @returns {opentype.BoundingBox}
  */
 Glyph.prototype.getBoundingBox = function() {
     return this.path.getBoundingBox();
@@ -129,12 +138,14 @@ Glyph.prototype.getBoundingBox = function() {
 
 /**
  * Convert the glyph to a Path we can draw on a drawing context.
+ *
  * @param  {number} [x=0] - Horizontal position of the beginning of the text.
  * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
  * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
- * @param  {Object=} options - xScale, yScale to stretch the glyph.
+ * @param  {object=} options - xScale, yScale to stretch the glyph.
  * @param  {opentype.Font} if hinting is to be used, the font
- * @return {opentype.Path}
+ * @param font
+ * @returns {opentype.Path}
  */
 Glyph.prototype.getPath = function(x, y, fontSize, options, font) {
     x = x !== undefined ? x : 0;
@@ -194,7 +205,8 @@ Glyph.prototype.getPath = function(x, y, fontSize, options, font) {
  * Split the glyph into contours.
  * This function is here for backwards compatibility, and to
  * provide raw access to the TrueType glyph outlines.
- * @return {Array}
+ *
+ * @returns {Array}
  */
 Glyph.prototype.getContours = function() {
     if (this.points === undefined) {
@@ -218,7 +230,8 @@ Glyph.prototype.getContours = function() {
 
 /**
  * Calculate the xMin/yMin/xMax/yMax/lsb/rsb for a Glyph.
- * @return {Object}
+ *
+ * @returns {object}
  */
 Glyph.prototype.getMetrics = function() {
     const commands = this.path.commands;
@@ -272,11 +285,12 @@ Glyph.prototype.getMetrics = function() {
 
 /**
  * Draw the glyph on the given context.
+ *
  * @param  {CanvasRenderingContext2D} ctx - A 2D drawing context, like Canvas.
  * @param  {number} [x=0] - Horizontal position of the beginning of the text.
  * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
  * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
- * @param  {Object=} options - xScale, yScale to stretch the glyph.
+ * @param  {object=} options - xScale, yScale to stretch the glyph.
  */
 Glyph.prototype.draw = function(ctx, x, y, fontSize, options) {
     this.getPath(x, y, fontSize, options).draw(ctx);
@@ -285,12 +299,20 @@ Glyph.prototype.draw = function(ctx, x, y, fontSize, options) {
 /**
  * Draw the points of the glyph.
  * On-curve points will be drawn in blue, off-curve points will be drawn in red.
+ *
  * @param  {CanvasRenderingContext2D} ctx - A 2D drawing context, like Canvas.
  * @param  {number} [x=0] - Horizontal position of the beginning of the text.
  * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
  * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
  */
 Glyph.prototype.drawPoints = function(ctx, x, y, fontSize) {
+    /**
+     *
+     * @param l
+     * @param x
+     * @param y
+     * @param scale
+     */
     function drawCircles(l, x, y, scale) {
         ctx.beginPath();
         for (let j = 0; j < l.length; j += 1) {
@@ -336,6 +358,7 @@ Glyph.prototype.drawPoints = function(ctx, x, y, fontSize) {
  * Black lines indicate the origin of the coordinate system (point 0,0).
  * Blue lines indicate the glyph bounding box.
  * Green line indicates the advance width of the glyph.
+ *
  * @param  {CanvasRenderingContext2D} ctx - A 2D drawing context, like Canvas.
  * @param  {number} [x=0] - Horizontal position of the beginning of the text.
  * @param  {number} [y=0] - Vertical position of the *baseline* of the text.

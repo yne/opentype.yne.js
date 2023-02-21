@@ -41,6 +41,11 @@ var markGlyphSets = function() {
     return this.parseList(Parser.pointer(Parser.coverage));
 };
 
+/**
+ *
+ * @param data
+ * @param start
+ */
 function parseGDEFTable(data, start) {
     start = start || 0;
     const p = new Parser(data, start);

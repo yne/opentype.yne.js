@@ -5,9 +5,10 @@ import BoundingBox from './bbox.js';
 /**
  * A bézier path containing a set of path commands similar to a SVG path.
  * Paths can be drawn on a context using `draw`.
+ *
  * @exports opentype.Path
  * @class
- * @constructor
+ * @class
  */
 function Path() {
     this.commands = [];
@@ -42,6 +43,7 @@ Path.prototype.lineTo = function(x, y) {
 
 /**
  * Draws cubic curve
+ *
  * @function
  * curveTo
  * @memberof opentype.Path.prototype
@@ -55,6 +57,7 @@ Path.prototype.lineTo = function(x, y) {
 
 /**
  * Draws cubic curve
+ *
  * @function
  * bezierCurveTo
  * @memberof opentype.Path.prototype
@@ -80,6 +83,7 @@ Path.prototype.curveTo = Path.prototype.bezierCurveTo = function(x1, y1, x2, y2,
 
 /**
  * Draws quadratic curve
+ *
  * @function
  * quadraticCurveTo
  * @memberof opentype.Path.prototype
@@ -91,6 +95,7 @@ Path.prototype.curveTo = Path.prototype.bezierCurveTo = function(x1, y1, x2, y2,
 
 /**
  * Draws quadratic curve
+ *
  * @function
  * quadTo
  * @memberof opentype.Path.prototype
@@ -111,12 +116,14 @@ Path.prototype.quadTo = Path.prototype.quadraticCurveTo = function(x1, y1, x, y)
 
 /**
  * Closes the path
+ *
  * @function closePath
  * @memberof opentype.Path.prototype
  */
 
 /**
  * Close the path
+ *
  * @function close
  * @memberof opentype.Path.prototype
  */
@@ -128,6 +135,7 @@ Path.prototype.close = Path.prototype.closePath = function() {
 
 /**
  * Add the given path or list of commands to the commands of this path.
+ *
  * @param  {Array} pathOrCommands - another opentype.Path, an opentype.BoundingBox, or an array of commands.
  */
 Path.prototype.extend = function(pathOrCommands) {
@@ -148,6 +156,7 @@ Path.prototype.extend = function(pathOrCommands) {
 
 /**
  * Calculate the bounding box of the path.
+ *
  * @returns {opentype.BoundingBox}
  */
 Path.prototype.getBoundingBox = function() {
@@ -196,6 +205,7 @@ Path.prototype.getBoundingBox = function() {
 
 /**
  * Draw the path to a 2D context.
+ *
  * @param {CanvasRenderingContext2D} ctx - A 2D drawing context.
  */
 Path.prototype.draw = function(ctx) {
@@ -230,12 +240,17 @@ Path.prototype.draw = function(ctx) {
 /**
  * Convert the Path to a string of path data instructions
  * See http://www.w3.org/TR/SVG/paths.html#PathData
+ *
  * @param  {number} [decimalPlaces=2] - The amount of decimal places for floating-point values
- * @return {string}
+ * @returns {string}
  */
 Path.prototype.toPathData = function(decimalPlaces) {
     decimalPlaces = decimalPlaces !== undefined ? decimalPlaces : 2;
 
+    /**
+     *
+     * @param v
+     */
     function floatToString(v) {
         if (Math.round(v) === v) {
             return '' + Math.round(v);
@@ -244,6 +259,9 @@ Path.prototype.toPathData = function(decimalPlaces) {
         }
     }
 
+    /**
+     *
+     */
     function packValues() {
         let s = '';
         for (let i = 0; i < arguments.length; i += 1) {
@@ -279,8 +297,9 @@ Path.prototype.toPathData = function(decimalPlaces) {
 
 /**
  * Convert the path to an SVG <path> element, as a string.
+ *
  * @param  {number} [decimalPlaces=2] - The amount of decimal places for floating-point values
- * @return {string}
+ * @returns {string}
  */
 Path.prototype.toSVG = function(decimalPlaces) {
     let svg = '<path d="';
@@ -304,8 +323,9 @@ Path.prototype.toSVG = function(decimalPlaces) {
 
 /**
  * Convert the path to a DOM element.
+ *
  * @param  {number} [decimalPlaces=2] - The amount of decimal places for floating-point values
- * @return {SVGPathElement}
+ * @returns {SVGPathElement}
  */
 Path.prototype.toDOMElement = function(decimalPlaces) {
     const temporaryPath = this.toPathData(decimalPlaces);

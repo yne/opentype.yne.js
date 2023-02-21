@@ -9,6 +9,7 @@ import applySubstitution from '../applySubstitution.js';
 
 /**
  * Check if a char can be connected to it's preceding char
+ *
  * @param {ContextParams} charContextParams context params of a char
  */
 function willConnectPrev(charContextParams) {
@@ -25,6 +26,7 @@ function willConnectPrev(charContextParams) {
 
 /**
  * Check if a char can be connected to it's proceeding char
+ *
  * @param {ContextParams} charContextParams context params of a char
  */
 function willConnectNext(charContextParams) {
@@ -39,6 +41,7 @@ function willConnectNext(charContextParams) {
 
 /**
  * Apply arabic presentation forms to a list of tokens
+ *
  * @param {ContextRange} range a range of tokens
  */
 function arabicPresentationForms(range) {
