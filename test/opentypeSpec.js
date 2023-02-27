@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { Font, Path, Glyph, parse, load} from '../src/opentype.js';
+import { Font, Path, Glyph, parse } from '../src/opentype.js';
 import { readFileSync } from 'fs';
 const loadSync = (url, opt) => parse(readFileSync(url), opt);
 
@@ -13,19 +13,6 @@ describe('opentype.js', function() {
         const aGlyph = font.charToGlyph('A');
         assert.equal(aGlyph.unicode, 65);
         assert.equal(aGlyph.path.commands.length, 15);
-    });
-
-    it('[deprecated] .load() promise resolve uppon success', function(done) {
-        load('./test/fonts/Roboto-Black.ttf').then((font) => {
-            assert.deepEqual(font.names.macintosh.fontFamily, {en: 'Roboto Black'});
-            assert.deepEqual(font.names.windows.fontFamily, {en: 'Roboto Black'});
-            assert.equal(font.unitsPerEm, 2048);
-            assert.equal(font.glyphs.length, 1294);
-            const aGlyph = font.charToGlyph('A');
-            assert.equal(aGlyph.unicode, 65);
-            assert.equal(aGlyph.path.commands.length, 15);
-            done();
-        });
     });
 
     it('can load a OpenType/CFF font', function() {
@@ -66,23 +53,6 @@ describe('opentype.js', function() {
         assert.equal(aGlyph.name, 'A');
         assert.equal(aGlyph.unicode, 65);
         assert.equal(aGlyph.path.commands.length, 14);
-    });
-
-    it('[deprecated] .load() handles a parseBuffer error', function(done) {
-        load('./test/fonts/badfont.ttf', function(err) {
-            if (err) {
-                done();
-            }
-        });
-    });
-
-    it('[deprecated] .load() handles a parseBuffer error as a rejected promise', function(done) {
-        load('./test/fonts/badfont.ttf')
-            .catch((err) => {
-                if (err) {
-                    done();
-                }
-            });
     });
 
     it('throws an error when advanceWidth is not set', function() {

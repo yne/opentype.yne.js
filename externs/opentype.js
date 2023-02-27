@@ -633,18 +633,6 @@ opentype.LookupList = function(lookupListTable, subtableMakers) {};
 opentype.BoundingBox = function() {};
 
 /**
- * @param  {string} url - The URL of the font to load.
- * @param  {Function} callback - The callback.
- */
-opentype.load = function(url, callback) {};
-
-/**
- * @param  {string} url - The URL of the font to load.
- * @return {opentype.Font}
- */
-opentype.loadSync = function(url) {};
-
-/**
  * @param  {ArrayBuffer}
  * @return {opentype.Font}
  */

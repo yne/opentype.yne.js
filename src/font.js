@@ -6,7 +6,7 @@ import { DefaultEncoding } from './encoding.js';
 import glyphset from './glyphset.js';
 import Position from './position.js';
 import Substitution from './substitution.js';
-import { isBrowser, checkArgument } from './util.js';
+import { checkArgument } from './util.js';
 import HintingTrueType from './hintingtt.js';
 import Bidi from './bidi.js';
 
@@ -525,42 +525,6 @@ Font.prototype.toArrayBuffer = function() {
     return buffer;
 };
 
-/**
- * Initiate a download of the OpenType font.
- */
-Font.prototype.download = function(fileName) {
-    const familyName = this.getEnglishName('fontFamily');
-    const styleName = this.getEnglishName('fontSubfamily');
-    fileName = fileName || familyName.replace(/\s/g, '') + '-' + styleName + '.otf';
-    const arrayBuffer = this.toArrayBuffer();
-
-    if (isBrowser()) {
-        window.URL = window.URL || window.webkitURL;
-
-        if (window.URL) {
-            const dataView = new DataView(arrayBuffer);
-            const blob = new Blob([dataView], {type: 'font/opentype'});
-
-            let link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = fileName;
-
-            let event = document.createEvent('MouseEvents');
-            event.initEvent('click', true, false);
-            link.dispatchEvent(event);
-        } else {
-            console.warn('Font file could not be downloaded. Try using a different browser.');
-        }
-    } else {
-        const fs = require('fs');
-        const buffer = Buffer.alloc(arrayBuffer.byteLength);
-        const view = new Uint8Array(arrayBuffer);
-        for (let i = 0; i < buffer.length; ++i) {
-            buffer[i] = view[i];
-        }
-        fs.writeFileSync(fileName, buffer);
-    }
-};
 /**
  * @private
  */

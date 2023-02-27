@@ -126,7 +126,16 @@ const font = new opentype.Font({
     ascender: 800,
     descender: -200,
     glyphs: glyphs});
-font.download();
+
+// case 1: node fs
+require('fs').appendFileSync('font.otf', Buffer.from(font.toArrayBuffer()));
+
+// case 2: browser download
+const blob = new Blob([font.toArrayBuffer()], {type: 'font/opentype'});
+document.body.appendChild(Object.assign(document.createElement('a'), {
+    download: 'myFont.otf', href: URL.createObjectURL(blob)
+})).click();
+
 ```
 
 If you want to inspect the font, use `font.toTables()`
